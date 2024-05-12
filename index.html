@@ -1,52 +1,37 @@
-<!DOCTYPE html> <!-- Document type declaration specifying HTML5 -->
-<html lang="en"> <!-- Start of HTML document with language set to English -->
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-    <!-- Metadata section containing information about the document -->
-    <meta charset="UTF-8"/> <!-- Character encoding set to UTF-8 -->
-    <meta name="description" content="Data Visualization" /> <!-- Description metadata -->
-    <meta name="keywords" content="HTML, CSS, D3" /> <!-- Keywords metadata -->
-    <meta name="author" content="Nikitha Bamunuarachchi" /> <!-- Author metadata -->
+    <!-- Metadata -->
+    <meta charset="UTF-8"/>
+    <meta name="description" content="Data Visualization" />
+    <meta name="keywords" content="HTML, CSS, D3" />
+    <meta name="author" content="Nikitha Bamunuarachchi" />
   
-    <!-- Title of the document -->
-    <title>LAB 7.1 D3 Line and Area Charts</title> 
+    <!-- Title -->
+    <title>Task 2.4 Drawing With Data-Scatter Plot</title> 
 
-    <!-- External JavaScript library: D3.js -->
+    <!-- D3.js library -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
 
-    <!-- External JavaScript file containing custom script -->
-    <script src="script.js"></script> <!-- Assumes 'script.js' contains custom JavaScript -->
-
-    <!-- Internal CSS styles -->
+    <script src="script.js"></script> 
     <style type="text/css">
 
      
-        .line{ /* CSS rule for elements with class 'line' */
-            fill:none; /* Fill set to none (no fill) */
-            stroke: red; /* Stroke color set to red */
-            stroke-width: 0.5; /* Stroke width set to 0.5 */
-             /* Dash array for stroke set to 5.5 */
+        .line{
 
-        }
-.buttons{
+            fill:none;
 
-color: black; 
-background-color: rgb(0, 200, 255); /* Green background */
-padding: 10px 20px; /* Increase padding for larger size */
-text-align: center; /* Centered text */
-text-decoration: none; /* No underline */
-display: inline-block; /* Display as inline-block */
-font-size: 10px; /* Font size */
-margin: 2px 1px; /* Margin */
-cursor: pointer; /* Cursor on hover */
+            stroke: red;
 
-
-}
-
-
+            stroke-width: 0.5;
 
         
 
+            
+
+        }
+      
     </style>
     
     
@@ -54,23 +39,20 @@ cursor: pointer; /* Cursor on hover */
 
 <body>
     <!-- Header -->
-    <h1> Immunization for various diseases </h1> <!-- Main heading -->
+    <h1> Number of UnEmployed in Australia </h1>
 
-    <div>
-        <div class="buttons">
-            <button onclick="updateChart('ACATHEPB')">Measles</button>
-            <button onclick="updateChart('ACATIMMU')">Diphtheria</button>
-            <button onclick="updateChart('ACATMEAS')">Hepatitis B</button>
-        </div>
+    <p id = "chart"></p> <!-- an Id on a p element for the svg to select -->
 
-    <p id = "chart"></p> <!-- Paragraph element with id 'chart' for the SVG to select -->
+
+
+
 
     <!-- Line break -->
     <br>
 
     <!-- Footer -->
-    <footer style="color:grey"> COS30045 Data Visualization </footer> <!-- Footer with gray text -->
-    <footer style="color:grey"> Nikitha V </footer> <!-- Footer with gray text and author's name -->
+    <footer style="color:grey"> COS30045 Data Visualization </footer>
+    <footer style="color:grey"> Nikitha V </footer>
 </body>
 
 </html>
