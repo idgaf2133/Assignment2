@@ -6,10 +6,11 @@ function init() {
 window.onload = init;
 
 function loadVisualization(file1, file2, color1, color2) {
-    var w = 600;
-    var h = 300;
+    var w = 500;
+    var h = 250;
     var padding = 30;
 
+    // Row converter remains the same
     var rowConverter = function(d) {
         return {
             date: new Date(+d.YEA, 0),
@@ -17,7 +18,7 @@ function loadVisualization(file1, file2, color1, color2) {
         };
     };
 
-    // Clear existing SVG to make room for a new one
+    // Remove any existing SVG
     d3.select("#chart").select("svg").remove();
 
     var svg = d3.select("#chart")
@@ -29,25 +30,32 @@ function loadVisualization(file1, file2, color1, color2) {
         d3.csv(file1, rowConverter),
         d3.csv(file2, rowConverter)
     ]).then(function(data) {
-        var dataset1 = data[0];
-        var dataset2 = data[1];
-
-        var combinedData = dataset1.concat(dataset2);
+        var dataset1 = data[0]; // Assuming this is immunization rates
+        var dataset2 = data[1]; // Assuming this is incidence rates
 
         var xScale = d3.scaleTime()
-            .domain([d3.min(combinedData, d => d.date), d3.max(combinedData, d => d.date)])
+            .domain([d3.min(dataset1.concat(dataset2), d => d.date), d3.max(dataset1.concat(dataset2), d => d.date)])
             .range([padding, w - padding]);
 
-        var yScale = d3.scaleLinear()
-            .domain([0, d3.max(combinedData, d => d.number)])
+        var yScaleLeft = d3.scaleLinear() // For immunization rates
+            .domain([0, 100]) // Assuming percentages are from 0% to 100%
+            .range([h - padding, padding]);
+
+        var yScaleRight = d3.scaleLinear() // For incidence rates
+            .domain([0, d3.max(dataset2, d => d.number)]) // Max of incidence rates
             .range([h - padding, padding]);
 
         var xAxis = d3.axisBottom().scale(xScale).ticks(10);
-        var yAxis = d3.axisLeft().scale(yScale).ticks(5);
+        var yAxisLeft = d3.axisLeft().scale(yScaleLeft).ticks(6);
+        var yAxisRight = d3.axisRight().scale(yScaleRight).ticks(4); // Right Y-axis
 
-        var line = d3.line()
+        var lineLeft = d3.line() // Line for the left Y-axis data
             .x(d => xScale(d.date))
-            .y(d => yScale(d.number));
+            .y(d => yScaleLeft(d.number));
+
+        var lineRight = d3.line() // Line for the right Y-axis data
+            .x(d => xScale(d.date))
+            .y(d => yScaleRight(d.number));
 
         // Draw the line for the first dataset
         svg.append("path")
@@ -55,15 +63,15 @@ function loadVisualization(file1, file2, color1, color2) {
             .attr("class", "line")
             .style("stroke", color1)
             .style("fill", "none")  
-            .attr("d", line);
+            .attr("d", lineLeft);
 
         // Draw the line for the second dataset
         svg.append("path")
             .datum(dataset2)
             .attr("class", "line")
-            .style("fill", "none")  
             .style("stroke", color2)
-            .attr("d", line);
+            .style("fill", "none")
+            .attr("d", lineRight);
 
         // Append X and Y axes
         svg.append("g")
@@ -74,7 +82,11 @@ function loadVisualization(file1, file2, color1, color2) {
         svg.append("g")
             .attr("class", "axis")
             .attr("transform", `translate(${padding},0)`)
-            .call(yAxis);
+            .call(yAxisLeft);
+
+        svg.append("g")
+            .attr("class", "axis")
+            .attr("transform", `translate(${w - padding},0)`)
+            .call(yAxisRight);
     });
 }
-
