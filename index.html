@@ -14,45 +14,17 @@
     <!-- D3.js library -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
 
-    <script src="script.js"></script> 
-    <style type="text/css">
-
-     
-        .line{
-
-            fill:none;
-
-            stroke: red;
-
-            stroke-width: 0.5;
-
-        
-
-            
-
-        }
-      
-    </style>
+  
     
     
 </head>
-
 <body>
-    <!-- Header -->
-    <h1> Number of UnEmployed in Australia </h1>
-
-    <p id = "chart"></p> <!-- an Id on a p element for the svg to select -->
-
-
-
-
-
-    <!-- Line break -->
-    <br>
-
-    <!-- Footer -->
-    <footer style="color:grey"> COS30045 Data Visualization </footer>
-    <footer style="color:grey"> Nikitha V </footer>
+    <button onclick="loadVisualization('Files/Diptheria.csv', 'Files/Diptheria_incidence.csv', 'blue', 'red')">DTP</button>
+    <button onclick="loadVisualization('Files/Measels.csv', 'Files/Measels_incidence.csv', 'blue', 'red')">Measels</button>
+    <div id="chart"></div>
+    <script src="script.js"></script>
 </body>
+
+
 
 </html>
