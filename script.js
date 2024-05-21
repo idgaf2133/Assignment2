@@ -1,11 +1,12 @@
 
+
 function init() {
   
-    loadVisualization('Files/Diptheria/Diptheria.csv', 'Files/Diptheria/Diptheria_incidence.csv', 'blue', 'red'); // Load default visualization on start
+    loadVisualization('Files/Diptheria/Diptheria.csv', 'Files/Diptheria/Diptheria_incidence.csv', 'blue', 'red', 'DTP'); // Load default visualization on start
 }
 window.onload = init;
 
-function loadVisualization(file1, file2, color1, color2) {
+function loadVisualization(file1, file2, color1, color2, disease) {
     var w = 500;
     var h = 250;
     var padding = 30;
@@ -88,5 +89,30 @@ function loadVisualization(file1, file2, color1, color2) {
             .attr("class", "axis")
             .attr("transform", `translate(${w - padding},0)`)
             .call(yAxisRight);
+
+        var nodalYears;
+            if (disease === 'DTP') {
+                nodalYears = [2001, 2002, 2003];
+            } else if (disease === 'Hepatitis') {
+                nodalYears = [1996, 2010, 2020, 2021];
+            } else if (disease === 'Measles') {
+                nodalYears = [2000, 2005, 2010, 2015, 2017];
+            }
+    
+            // Add circles for immunization dataset nodal points
+            dataset1.forEach(function(d) {
+                if (nodalYears.includes(d.date.getFullYear())) {
+                    svg.append("circle")
+                        .attr("cx", xScale(d.date))
+                        .attr("cy", yScaleLeft(d.number))
+                        .attr("r", 5)
+                        .style("fill", color1);
+                }
+            });
     });
+
+
+
 }
+
+
