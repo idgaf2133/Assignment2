@@ -37,9 +37,10 @@ function loadVisualization(file1, file2, color1, color2, disease) {
         var xScale = d3.scaleTime()
             .domain([d3.min(dataset1.concat(dataset2), d => d.date), d3.max(dataset1.concat(dataset2), d => d.date)])
             .range([padding, w - padding]);
-
+            
+      var minValue = d3.min(dataset1, d => d.number);
         var yScaleLeft = d3.scaleLinear() // For immunization rates
-            .domain([0, 100]) // Assuming percentages are from 0% to 100%
+            .domain([Math.max(0, minValue - 10), 100]) // Start from a value slightly lower than the minimum
             .range([h - padding, padding]);
 
         var yScaleRight = d3.scaleLinear() // For incidence rates
