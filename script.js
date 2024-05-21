@@ -92,11 +92,11 @@ function loadVisualization(file1, file2, color1, color2, disease) {
 
         var nodalYears;
             if (disease === 'DTP') {
-                nodalYears = [2001, 2002, 2003];
+                nodalYears = [1996.1997,1998,1999,2000,2001,2002,2005,2009,2011,2013,2015,2018,2020,2021,2022];
             } else if (disease === 'Hepatitis') {
-                nodalYears = [1996, 2010, 2020, 2021];
+                nodalYears = [2001,2003,2005,2008,2011,2014,2015,2017,2018,2020,2021,2022];
             } else if (disease === 'Measles') {
-                nodalYears = [2000, 2005, 2010, 2015, 2017];
+                nodalYears = [1996, 1997, 1998, 2000, 2001,2002,2003,2005, 2009,2013,2016,2020,2022];
             }
     
             // Add circles for immunization dataset nodal points
@@ -105,7 +105,7 @@ function loadVisualization(file1, file2, color1, color2, disease) {
                     svg.append("circle")
                         .attr("cx", xScale(d.date))
                         .attr("cy", yScaleLeft(d.number))
-                        .attr("r", 5)
+                        .attr("r", 3)
                         .style("fill", color1);
                 }
             });
