@@ -37,7 +37,7 @@ function loadVisualization(file1, file2, color1, color2, disease) {
         var xScale = d3.scaleTime()
             .domain([d3.min(dataset1.concat(dataset2), d => d.date), d3.max(dataset1.concat(dataset2), d => d.date)])
             .range([padding, w - padding]);
-            
+
       var minValue = d3.min(dataset1, d => d.number);
         var yScaleLeft = d3.scaleLinear() // For immunization rates
             .domain([Math.max(0, minValue - 10), 100]) // Start from a value slightly lower than the minimum
@@ -91,23 +91,35 @@ function loadVisualization(file1, file2, color1, color2, disease) {
             .attr("transform", `translate(${w - padding},0)`)
             .call(yAxisRight);
 
-        var nodalYears;
+        var nodalYearsImumunization;
+        var nodalYearsIncidence;
+        //var 
             if (disease === 'DTP') {
-                nodalYears = [1996.1997,1998,1999,2000,2001,2002,2005,2009,2011,2013,2015,2018,2020,2021,2022];
+                nodalYearsImumunization = [1996,1997,1998,1999,2000,2001,2002,2005,2009,2011,2013,2015,2018,2020,2021,2022];
+                nodalYearsIncidence = [1997,2000,2004,2008,2009,2011,2013,2015,2018];
             } else if (disease === 'Hepatitis') {
-                nodalYears = [2001,2003,2005,2008,2011,2014,2015,2017,2018,2020,2021,2022];
+                nodalYearsImumunization = [2001,2003,2005,2008,2011,2014,2015,2017,2018,2020,2021,2022];
             } else if (disease === 'Measles') {
-                nodalYears = [1996, 1997, 1998, 2000, 2001,2002,2003,2005, 2009,2013,2016,2020,2022];
+                nodalYearsImumunization = [1996, 1997, 1998, 2000, 2001,2002,2003,2005, 2009,2013,2016,2020,2022];
             }
     
             // Add circles for immunization dataset nodal points
             dataset1.forEach(function(d) {
-                if (nodalYears.includes(d.date.getFullYear())) {
+                if (nodalYearsImumunization.includes(d.date.getFullYear())) {
                     svg.append("circle")
                         .attr("cx", xScale(d.date))
                         .attr("cy", yScaleLeft(d.number))
                         .attr("r", 3)
                         .style("fill", color1);
+                }
+            });
+            dataset2.forEach(function(d) {
+                if (nodalYearsIncidence.includes(d.date.getFullYear())) {
+                    svg.append("circle")
+                        .attr("cx", xScale(d.date))
+                        .attr("cy", yScaleRight(d.number))
+                        .attr("r", 3)
+                        .style("fill", color2);
                 }
             });
     });

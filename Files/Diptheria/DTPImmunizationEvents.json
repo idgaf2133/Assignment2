@@ -1,0 +1,66 @@
+{
+    "1996": {
+        "events": "Introduction of the Acellular Pertussis Vaccine",
+        "description": "The acellular pertussis vaccine (DTPa) was introduced to replace the whole-cell pertussis vaccine (DTPw) in the primary vaccination schedule. The acellular vaccine has fewer side effects and is better tolerated by children."
+    },
+    "1997": {
+        "events": "National Immunization Program Schedule Update",
+        "description": "Inclusion of the DTPa vaccine in the National Immunization Program (NIP) for infants at 2, 4, and 6 months of age, with booster doses at 18 months and 4-5 years. Goal: Increase vaccination coverage and reduce the incidence of pertussis."
+    },
+    "1998": {
+        "events": "School-Based Immunization Programs",
+        "description": "Implementation of school-based vaccination programs to ensure children receive their DTPa booster doses. Increased vaccination coverage among school-aged children."
+    },
+    "1999": {
+        "events": "Catch-Up Immunization Campaigns",
+        "description": "Targeted immunization campaigns aimed at catching up children and adolescents who missed their DTPa vaccinations. Objective: Ensure all children are protected against diphtheria, tetanus, and pertussis."
+    },
+    "2000": {
+        "events": "Enhanced Surveillance and Reporting",
+        "description": "Strengthening of surveillance and mandatory reporting of diphtheria, tetanus, and pertussis cases. Purpose: Monitor vaccine effectiveness and disease incidence more accurately."
+    },
+    "2001": {
+        "events": "Introduction of Combined Vaccines",
+        "description": "Introduction of combination vaccines that include DTPa along with other vaccines (e.g., DTPa-IPV, which includes inactivated poliovirus). Benefit: Reduces the number of injections needed, improving compliance and vaccination coverage."
+    },
+    "2002": {
+        "events": "Continued Public Health Campaigns",
+        "description": "Ongoing public health campaigns to educate parents and caregivers about the importance of timely DTPa vaccination. Goal: Maintain high vaccination rates and prevent outbreaks of diphtheria, tetanus, and pertussis."
+    },
+    "2005": {
+        "events": "Introduction of Adult and Adolescent Boosters",
+        "description": "Recommendations for booster doses of DTPa for adolescents and adults, especially pregnant women and healthcare workers. Reason: To protect against waning immunity and prevent transmission to infants."
+    },
+    "2009": {
+        "events": "National Immunization Program Schedule Update",
+        "description": "Introduction of a booster dose at 11-13 years of age in the school-based program. Goal: Provide continued protection during adolescence when pertussis transmission risk increases."
+    },
+    "2011": {
+        "events": "Pertussis Outbreak Response",
+        "description": "Enhanced pertussis vaccination recommendations and public health campaigns in response to a rise in pertussis cases. Measures: Free pertussis vaccinations for parents of newborns in certain states."
+    },
+    "2013": {
+        "events": "Pregnancy Vaccination Recommendations",
+        "description": "Recommendation for DTPa vaccination during pregnancy (third trimester) to protect newborns from pertussis. Impact: Increased uptake of maternal pertussis vaccination, reducing pertussis incidence in infants."
+    },
+    "2015": {
+        "events": "No Jab, No Pay Policy",
+        "description": "Requirement for children to be fully immunized (including DTPa) to receive family assistance payments. Effect: Increased vaccination compliance and coverage."
+    },
+    "2018": {
+        "events": "Strengthened Immunization Requirements for School Entry",
+        "description": "States and territories implemented laws requiring proof of immunization for school enrollment. Goal: Ensure high vaccination coverage among school-aged children."
+    },
+    "2020": {
+        "events": "COVID-19 Pandemic Response",
+        "description": "Efforts to maintain routine immunization schedules despite pandemic-related disruptions. Measures: Public health campaigns emphasizing the importance of continuing vaccinations."
+    },
+    "2021": {
+        "events": "Continued Focus on Adolescent and Adult Boosters",
+        "description": "Continued emphasis on booster doses for adolescents and adults, especially in light of ongoing pertussis transmission risks. Impact: Sustained high coverage and reduced disease incidence."
+    },
+    "2022": {
+        "events": "Ongoing Surveillance and Vaccination Efforts",
+        "description": "Maintaining high vaccination coverage, addressing vaccine misinformation, and ensuring robust surveillance systems. Initiatives: Ongoing public health campaigns and school-based vaccination programs to prevent DTP diseases."
+    }
+}

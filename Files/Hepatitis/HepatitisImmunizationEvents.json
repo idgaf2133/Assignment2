@@ -1,0 +1,58 @@
+{
+    "2001": {
+        "events": "Inclusion of Hepatitis B Vaccine in National Immunization Program",
+        "description": "Policy Update: The hepatitis B vaccine was included in the National Immunization Program (NIP) for all infants at birth, 2, 4, and 6 months. Goal: To provide early protection against hepatitis B and reduce the incidence of the disease."
+    },
+    "2003": {
+        "events": "Hepatitis B Vaccination for Adolescents",
+        "description": "Initiative: A catch-up vaccination program for adolescents aged 10-13 who had not been vaccinated as infants. Impact: Improved vaccination coverage among older children, ensuring broader immunity in the population."
+    },
+    "2005": {
+        "events": "Expanded Vaccination Programs",
+        "description": "Policy: Expansion of vaccination programs to include hepatitis A and B vaccination for Indigenous children in high-risk areas. Reason: Higher rates of hepatitis B infection in Indigenous communities warranted targeted interventions."
+    },
+    "2008": {
+        "events": "Hepatitis A and B Vaccination for High-Risk Adults",
+        "description": "Initiative: Introduction of hepatitis A and B vaccination for high-risk adult populations, including healthcare workers, people with chronic liver disease, and those with high-risk behaviors. Objective: To reduce the transmission and impact of hepatitis among vulnerable populations."
+    },
+    "2010": {
+        "events": "National Hepatitis B Strategy 2010-2013",
+        "description": "Strategy: Development of a national strategy focused on prevention, diagnosis, and treatment of hepatitis B. Goals: Increase vaccination rates, improve early diagnosis, and enhance access to care for people with hepatitis B."
+    },
+    "2011": {
+        "events": "Hepatitis B Vaccination in Pregnancy",
+        "description": "Policy Recommendation: Recommendation for pregnant women to be screened for hepatitis B and vaccinated if at risk, to prevent mother-to-child transmission. Impact: Reduction in perinatal transmission of hepatitis B."
+    },
+    "2014": {
+        "events": "Hepatitis B in Newborns",
+        "description": "Policy: Reinforcement of the importance of administering the hepatitis B vaccine within 24 hours of birth for all newborns. Goal: To further reduce the risk of mother-to-child transmission."
+    },
+    "2015": {
+        "events": "No Jab, No Pay Policy",
+        "description": "Policy: Requirement for children to be fully immunized (including hepatitis B) to receive family assistance payments. Effect: Increased vaccination compliance and coverage."
+    },
+    "2016": {
+        "events": "Updated National Immunization Program Schedule",
+        "description": "Update: Introduction of a combined hepatitis A and B vaccine for infants in high-risk areas, simplifying the vaccination schedule. Goal: Improve vaccination rates and reduce hepatitis incidence in high-risk populations."
+    },
+    "2018": {
+        "events": "National Hepatitis B Strategy 2018-2022",
+        "description": "Strategy: Update of the national strategy to address ongoing challenges in hepatitis B prevention and management. Focus: Enhance vaccination efforts, improve surveillance, and support research and innovation in hepatitis B treatment."
+    },
+    "2019": {
+        "events": "Hepatitis B Management in Primary Care",
+        "description": "Initiative: Increased emphasis on the role of primary care providers in managing hepatitis B, including vaccination, testing, and treatment. Impact: Improved integration of hepatitis B management into primary healthcare services."
+    },
+    "2020": {
+        "events": "COVID-19 Pandemic Response",
+        "description": "Adjustment: Efforts to maintain routine immunization schedules, including hepatitis B, despite pandemic-related disruptions. Measures: Public health campaigns emphasizing the importance of continuing vaccinations."
+    },
+    "2021": {
+        "events": "Strengthened Focus on Adult Vaccination",
+        "description": "Policy: Continued emphasis on vaccinating high-risk adults, including healthcare workers and people with chronic conditions. Impact: Sustained high coverage and reduced hepatitis B transmission."
+    },
+    "2022": {
+        "events": "Ongoing Surveillance and Vaccination Efforts",
+        "description": "Focus: Maintaining high vaccination coverage, addressing vaccine misinformation, and ensuring robust surveillance systems. Initiatives: Ongoing public health campaigns and targeted vaccination programs to prevent hepatitis B."
+    }
+}
