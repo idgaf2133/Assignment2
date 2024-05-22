@@ -1,0 +1,32 @@
+{
+    "1996": {
+      "Event": "Resurgence of Measles",
+      "Description": "Despite high immunization rates, Australia experienced multiple outbreaks of measles, primarily due to pockets of unvaccinated children."
+    },
+    "1999": {
+      "Event": "Large Outbreak in South Australia",
+      "Description": "South Australia reported a significant measles outbreak, leading to a re-evaluation of immunization strategies."
+    },
+    "2005": {
+      "Event": "Outbreak in Victoria",
+      "Description": "An outbreak occurred in Victoria, indicating gaps in herd immunity among young adults and adolescents."
+    },
+    "2011": {
+      "Event": "Outbreak Linked to the 2011 Rugby World Cup",
+      "Description": "The influx of international visitors for the Rugby World Cup led to a small outbreak, reflecting the global nature of measles transmission."
+    },
+    "2014": {
+      "Event": "Outbreak in Western Australia",
+      "Description": "A significant outbreak in Western Australia was traced back to a returned traveler from Southeast Asia, stressing the importance of vaccination for travelers."
+    },
+    "2017": {
+      "Event": "Outbreak in New South Wales",
+      "Description": "New South Wales saw an outbreak primarily in unvaccinated individuals, leading to renewed calls for complete vaccination."
+    },
+    "2019": {
+      "Event": "Outbreak Amid Global Resurgence",
+      "Description": "Alongside a global increase in measles cases, Australia reported multiple outbreaks, underscoring the ongoing risk from international movements."
+    }
+  
+  }
+  

@@ -1,0 +1,39 @@
+{
+    "1997": {
+      "Event": "Pertussis Peak",
+      "Description": "A notable increase in pertussis cases occurred this year, significantly affecting children and adolescents. Public health efforts focused on raising awareness and improving vaccination rates. The outbreak prompted widespread media coverage and public concern about vaccine effectiveness."
+    },
+    "2001": {
+      "Event": "Another Surge in Pertussis Cases",
+      "Description": "Pertussis cases surged again, reflecting the cyclical nature of the disease. This outbreak particularly impacted infants and young children, raising concerns about maternal and newborn vaccination strategies. Health authorities intensified efforts to educate parents about the importance of booster shots."
+    },
+    "2005": {
+      "Event": "Pertussis Outbreak",
+      "Description": "Australia experienced a significant outbreak of pertussis, affecting a broad age range from infants to adults. The outbreak emphasized the need for widespread immunization and booster campaigns. Health services were strained, particularly in regions with lower vaccination rates."
+    },
+    "2008": {
+      "Event": "Tetanus Case in an Elderly Individual",
+      "Description": "A rare but severe case of tetanus was reported in an elderly individual, highlighting gaps in booster vaccination coverage among older adults. The case prompted public health reminders about the importance of maintaining tetanus immunity. It also led to discussions on the accessibility of booster vaccines for the elderly."
+    },
+    "2009": {
+      "Event": "Large Pertussis Outbreak",
+      "Description": "This year saw one of the larger pertussis outbreaks, with a significant number of cases reported across the country. The outbreak primarily affected children and adolescents, leading to increased hospitalizations. It prompted renewed efforts to ensure that children receive all their scheduled vaccinations on time."
+    },
+    "2012": {
+      "Event": "Major Pertussis Epidemic",
+      "Description": "Marking a significant epidemic, over 14,000 cases of pertussis were reported. The epidemic spread across all states and territories, affecting populations in both urban and rural areas. This event served as a major wake-up call to enhance pertussis control strategies."
+    },
+    "2015": {
+      "Event": "Diphtheria Case in a Tourist",
+      "Description": "A rare case of diphtheria was identified in a tourist visiting Australia, causing concern about the disease entering the country through international travel. This incident highlighted the global nature of infectious diseases and the importance of maintaining high vaccination rates. It also prompted a review of screening and vaccination policies for incoming travelers."
+    },
+    "2018": {
+      "Event": "Spike in Pertussis Cases",
+      "Description": "Another spike in pertussis cases was observed, continuing the trend of periodic outbreaks. The repeated occurrence of outbreaks stressed the importance of maintaining public awareness and vaccination efforts. This event particularly highlighted the need for booster vaccinations in teenagers and adults."
+    },
+    "2020": {
+      "Event": "Impact of COVID-19 on Routine Immunization",
+      "Description": "The COVID-19 pandemic significantly impacted routine immunizations, potentially leading to reduced coverage and increased vulnerability to diseases like pertussis. Concerns grew about the long-term effects of disrupted vaccination schedules. Health authorities worked to mitigate these impacts through public health messaging and adapted vaccination campaigns."
+    }
+  }
+  

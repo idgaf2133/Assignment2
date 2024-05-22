@@ -14,13 +14,13 @@ function loadVisualization(file1, file2, color1, color2, disease) {
     var padding = 30;
     
     // Importing events data for tooltips
-    var eventsData;
+    var immunizationEventsData;
     if (disease === 'DTP') {
-        eventsData = 'Files/Diptheria/DTPImmunizationEvents.json';
+        immunizationEventsData = 'Files/Diptheria/DTPImmunizationEvents.json';
     } else if (disease === 'Hepatitis') {
-        eventsData = 'Files/Hepatitis/HepatitisImmunizationEvents.json';
+        immunizationEventsData = 'Files/Hepatitis/HepatitisImmunizationEvents.json';
     } else if (disease === 'Measles') {
-        eventsData = 'Files/Measels/MeaselsImmunizationEvents.json';
+        immunizationEventsData = 'Files/Measels/MeaselsImmunizationEvents.json';
     }
 
     // Row converter remains the same
@@ -47,11 +47,11 @@ function loadVisualization(file1, file2, color1, color2, disease) {
     Promise.all([
         d3.csv(file1, rowConverter),
         d3.csv(file2, rowConverter),
-        d3.json(eventsData)
+        d3.json(immunizationEventsData)
     ]).then(function(data) {
         var dataset1 = data[0];
         var dataset2 = data[1];
-        var events = data[2];
+        var immunizationEvents = data[2];
 
         var xScale = d3.scaleTime()
             .domain([d3.min(dataset1.concat(dataset2), d => d.date), d3.max(dataset1.concat(dataset2), d => d.date)])
@@ -92,17 +92,17 @@ function loadVisualization(file1, file2, color1, color2, disease) {
         // Add circles and tooltips
         dataset1.forEach(function(d) {
             var year = d.date.getFullYear();
-            if (events[year]) {
+            if (immunizationEvents[year]) {
                 svg.append("circle")
                     .attr("cx", xScale(d.date))
                     .attr("cy", yScaleLeft(d.number))
-                    .attr("r", 5)
+                    .attr("r", 4)
                     .style("fill", color1)
                     .on("mouseover", function(event) {
                         tooltip.transition()
                             .duration(300)
                             .style("opacity", .9);
-                        tooltip.html("<strong>Year:</strong> " + year + "<br/><strong>Event:</strong> " + events[year].events + "<br/><strong>Description:</strong> " + events[year].description)
+                        tooltip.html("<strong>Year:</strong> " + year + "<br/><strong>Event:</strong> " + immunizationEvents[year].events + "<br/><strong>Description:</strong> " + immunizationEvents[year].description)
                             .style("left", (event.pageX) + "px")
                             .style("top", (event.pageY - 28) + "px");
                     })
