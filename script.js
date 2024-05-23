@@ -1,117 +1,96 @@
 
+function init()
+{
+var w = 1000;
+var h = 500;
+var padding = 55;
 
-function init() {
-  
-    loadVisualization('Files/Diptheria/Diptheria.csv', 'Files/Diptheria/Diptheria_incidence.csv', 'blue', 'red', 'DTP'); // Load default visualization on start
-}
-
-window.onload = init;
+ // Select the body element and append an SVG container
 
 
-function loadVisualization(file1, file2, color1, color2, disease) {
-    var w = 500;
-    var h = 250;
-    var padding = 30;
-    
-    // Importing events data for tooltips
-    var immunizationEventsData;
-    if (disease === 'DTP') {
-        immunizationEventsData = 'Files/Diptheria/DTPImmunizationEvents.json';
-    } else if (disease === 'Hepatitis') {
-        immunizationEventsData = 'Files/Hepatitis/HepatitisImmunizationEvents.json';
-    } else if (disease === 'Measles') {
-        immunizationEventsData = 'Files/Measels/MeaselsImmunizationEvents.json';
-    }
+ 
 
-    // Row converter remains the same
-    var rowConverter = function(d) {
-        return {
-            date: new Date(+d.YEA, 0),
-            number: +d.Value
-        };
+var rowConverter = function(d) {
+    return {
+        date: new Date(+d.year, (+d.month - 1)),
+        number: +d.number
     };
-
-    // Remove any existing SVG
-    d3.select("#chart").select("svg").remove();
-
-    var svg = d3.select("#chart")
-                .append("svg")
-                .attr("width", w)
-                .attr("height", h);
-
-    // Tooltip setup
-    var tooltip = d3.select("body").append("div")
-        .attr("class", "tooltip")
-        .style("opacity", 0);
-
-    Promise.all([
-        d3.csv(file1, rowConverter),
-        d3.csv(file2, rowConverter),
-        d3.json(immunizationEventsData)
-    ]).then(function(data) {
-        var dataset1 = data[0];
-        var dataset2 = data[1];
-        var immunizationEvents = data[2];
-
-        var xScale = d3.scaleTime()
-            .domain([d3.min(dataset1.concat(dataset2), d => d.date), d3.max(dataset1.concat(dataset2), d => d.date)])
-            .range([padding, w - padding]);
-
-        var minValue = d3.min(dataset1, d => d.number);
-        var yScaleLeft = d3.scaleLinear() 
-            .domain([Math.max(0, minValue - 10), 100]) 
-            .range([h - padding, padding]);
-
-
-        var yScaleRight = d3.scaleLinear()
-            .domain([0, d3.max(dataset2, d => d.number)])
-            .range([h - padding, padding]);
-
-        var xAxis = d3.axisBottom().scale(xScale).ticks(10);
-        var yAxisLeft = d3.axisLeft().scale(yScaleLeft).ticks(6);
-        var yAxisRight = d3.axisRight().scale(yScaleRight).ticks(4);
-
-        // Lines for left and right datasets
-        var lineLeft = d3.line()
-            .x(d => xScale(d.date))
-            .y(d => yScaleLeft(d.number));
-
-        var lineRight = d3.line()
-            .x(d => xScale(d.date))
-            .y(d => yScaleRight(d.number));
-
-        // Draw the lines
-        svg.append("path").datum(dataset1).attr("class", "line").style("stroke", color1).style("fill", "none")  .attr("d", lineLeft);
-        svg.append("path").datum(dataset2).attr("class", "line").style("stroke", color2).style("fill", "none")  .attr("d", lineRight);
-
-        // Add axes
-        svg.append("g").attr("transform", `translate(0,${h - padding})`).call(xAxis);
-        svg.append("g").attr("transform", `translate(${padding},0)`).call(yAxisLeft);
-        svg.append("g").attr("transform", `translate(${w - padding},0)`).call(yAxisRight);
-
-        // Add circles and tooltips
-        dataset1.forEach(function(d) {
-            var year = d.date.getFullYear();
-            if (immunizationEvents[year]) {
-                svg.append("circle")
-                    .attr("cx", xScale(d.date))
-                    .attr("cy", yScaleLeft(d.number))
-                    .attr("r", 4)
-                    .style("fill", color1)
-                    .on("mouseover", function(event) {
-                        tooltip.transition()
-                            .duration(300)
-                            .style("opacity", .9);
-                        tooltip.html("<strong>Year:</strong> " + year + "<br/><strong>Event:</strong> " + immunizationEvents[year].events + "<br/><strong>Description:</strong> " + immunizationEvents[year].description)
-                            .style("left", (event.pageX) + "px")
-                            .style("top", (event.pageY - 28) + "px");
-                    })
-                    .on("mouseout", function(d) {
-                        tooltip.transition()
-                            .duration(300)
-                            .style("opacity", 0);
-                    });
-            }
-        });
-    });
 }
+
+
+d3.csv("Unemployment_78-95.csv", rowConverter)
+    .then(function(data) 
+        {
+     var dataset = data;
+     lineChart(dataset);
+
+     console.table(dataset, ["date", "number"]);
+     });
+
+function lineChart(dataset){
+
+    var xScale = d3.scaleTime()
+    .domain([
+         d3.min(dataset, function(d) { return d.date; }),
+         d3.max(dataset, function(d) { return d.date; })
+     ])
+    .range([padding, w]);
+
+      var yScale = d3.scaleLinear()
+     .domain([0, d3.max(dataset, function(d) { return d.number; })])
+     .range([h-padding, 0]);
+
+
+     				
+	var xAxis = d3.axisBottom()
+                 .ticks(10)
+                .scale(xScale);
+                
+                
+     
+     var yAxis = d3.axisLeft()
+                 .ticks(10)
+                .scale(yScale);
+
+    
+    
+
+     var line = d3.line()
+			.x(function(d) { return xScale(d.date); })
+			.y(function(d) { return yScale(d.number); });
+
+    
+
+     area = d3.area()
+             
+            .x(function(d) { return xScale(d.date); })
+            .y0(function() { return yScale.range()[0]; })
+            .y1(function(d) { return yScale(d.number); });
+
+            var svg = d3.select("#chart")
+            .append("svg")
+            .attr("width", w)
+            .attr("height", h);
+
+
+            svg.append("path")
+                .datum(dataset)
+                .attr("class", "line")
+                .attr("d", line);
+            
+            svg.append("g")
+                .attr("class", "axis")
+                .attr("transform", "translate(0," + (h - padding) + ")")
+                .call(xAxis);
+
+            svg.append("g")
+                .attr("class", "axis")
+                .attr("transform", "translate(" + padding + ",0)")
+                .call(yAxis);
+ 
+    
+
+};
+}
+
+    window.onload = init;
