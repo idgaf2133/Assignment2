@@ -1,5 +1,6 @@
 
 
+ 
  loadVisualization('Files/Diptheria/Diptheria.csv', 'Files/Diptheria/Diptheria_incidence.csv', 'blue', 'red', 'DTP'); // Load default visualization on start
 
 
@@ -32,7 +33,9 @@ function loadVisualization(file1, file2, color1, color2, disease) {
     };
 
     // Remove any existing SVG
-    d3.select("#chart").select("svg").remove();
+    d3.select("#chart")
+      .select("svg")
+      .remove();
 
     var svg = d3.select("#chart")
                 .append("svg")
@@ -82,31 +85,7 @@ function loadVisualization(file1, file2, color1, color2, disease) {
             .x(d => xScale(d.date))
             .y(d => yScaleRight(d.number));
 
-            /*
-                    var leftPath = svg.append("path")
-            .datum(dataset1)
-            .attr("class", "line")
-            .style("stroke", immunizationColor)
-            .style("fill", "none")
-            .attr("d", lineLeft);
-
-        leftPath.transition()
-            .duration(1000)
-            .attr("d", lineLeft(dataset1));
-
-        var rightPath = svg.append("path")
-            .datum(dataset2)
-            .attr("class", "line")
-            .style("stroke", incidenceColor)
-            .style("fill", "none")
-            .attr("d", lineRight);
-
-        rightPath.transition()
-            .duration(1000)
-            .attr("d", lineRight(dataset2));
-
-            */
-        // Draw the lines
+     
         svg.append("path").datum(dataset1).attr("class", "line").style("stroke", color1).style("fill", "none")  .attr("d", lineLeft);
 
        
@@ -173,3 +152,6 @@ function loadVisualization(file1, file2, color1, color2, disease) {
         });
     });
 }
+
+
+
