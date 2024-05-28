@@ -22,23 +22,29 @@
             width: auto;
             height: auto;
             padding: 10px;
+        
             font: 12px sans-serif;
-            background: lightsteelblue;
             border: 0px;
             border-radius: 8px;
             pointer-events: none;
             opacity: 0;
             color: black;
         }
+
+  
     </style>
     
     
 </head>
 <body>
     <h1>Diseases of Australia</h1>
-    <button onclick="loadVisualization('Files/Diptheria/Diptheria.csv', 'Files/Diptheria/Diptheria_incidence.csv', 'blue', 'red','DTP')">DTP</button>
-    <button onclick="loadVisualization('Files/Measels/Measels.csv', 'Files/Measels/Measels_incidence.csv', 'blue', 'red','Measles')">Measels</button>
-    <button onclick="loadVisualization('Files/Hepatitis/Hepatitis.csv', 'Files/Hepatitis/Hepatitis_incidence.csv', 'blue', 'red','Hepatitis')">Heaptitis</button>
+   
+  <button onclick="loadVisualization('Files/Diptheria/Diptheria.csv', 'Files/Diptheria/Diptheria_incidence.csv', 'blue', 'red','DTP')">DTP</button>
+  <button onclick="loadVisualization('Files/Measels/Measels.csv', 'Files/Measels/Measels_incidence.csv', 'blue', 'red','Measles')">Measels</button>
+  <button onclick="loadVisualization('Files/Hepatitis/Hepatitis.csv', 'Files/Hepatitis/Hepatitis_incidence.csv', 'blue', 'red','Hepatitis')">Heaptitis</button>
+
+  
+    
     <div id="chart"></div>
     <script src="script.js"></script>
 </body>

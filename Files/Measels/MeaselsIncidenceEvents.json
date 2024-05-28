@@ -1,0 +1,28 @@
+
+
+{
+  "1997": {
+    "Event": "Measles Outbreak",
+    "Description": "A significant measles outbreak occurred due to lower vaccination rates and gaps in immunization coverage, highlighting the need for better vaccine uptake."
+  },
+  "2012": {
+    "Event": "Sydney Outbreak",
+    "Description": "A notable outbreak started with a man returning from Thailand, leading to 167 cases in southwest Sydney. This event emphasized the impact of international travel and the presence of unvaccinated communities."
+  },
+  "2014": {
+    "Event": "Measles Elimination Declaration",
+    "Description": "The World Health Organization declared measles eliminated in Australia. However, measles cases continued to be imported from other countries, posing a constant threat."
+  },
+  "2018": {
+    "Event": "Smaller Outbreaks",
+    "Description": "Smaller outbreaks occurred, particularly in regions with lower vaccination rates and among populations with higher vaccine hesitancy, such as certain migrant communities and areas with vaccine misinformation."
+  },
+  "2019": {
+    "Event": "Spike in Cases",
+    "Description": "Australia experienced another spike in measles cases, largely due to international travel and decreased vaccination rates in specific age groups. This outbreak reinforced the importance of maintaining high immunization coverage."
+  },
+  "2022": {
+    "Event": "Global Increase Impact",
+    "Description": "The global increase in measles cases, partly due to disruptions caused by the COVID-19 pandemic, also affected Australia. Despite overall high vaccination rates, areas with lower coverage remained at risk for outbreaks."
+  }
+}
