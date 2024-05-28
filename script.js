@@ -12,9 +12,7 @@ function loadVisualization(file1, file2, color1, color2, disease) {
     var w = 500;
     var h = 250;
     var padding = 30;
-    
-    // Importing events data for tooltips
-    var immunizationEventsData;
+var immunizationEventsData;
     if (disease === 'DTP') {
         immunizationEventsData = 'Files/Diptheria/DTPImmunizationEvents.json';
     } else if (disease === 'Hepatitis') {
@@ -22,7 +20,7 @@ function loadVisualization(file1, file2, color1, color2, disease) {
     } else if (disease === 'Measles') {
         immunizationEventsData = 'Files/Measels/MeaselsImmunizationEvents.json';
     }
-
+   
     // Row converter remains the same
     var rowConverter = function(d) {
         return {
@@ -88,6 +86,9 @@ function loadVisualization(file1, file2, color1, color2, disease) {
         svg.append("g").attr("transform", `translate(0,${h - padding})`).call(xAxis);
         svg.append("g").attr("transform", `translate(${padding},0)`).call(yAxisLeft);
         svg.append("g").attr("transform", `translate(${w - padding},0)`).call(yAxisRight);
+         // Importing events data for tooltips
+  
+
 
         // Add circles and tooltips
         dataset1.forEach(function(d) {
