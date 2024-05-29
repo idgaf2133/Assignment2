@@ -1,164 +1,215 @@
 
+// Global variables to store data and visualization elements
+var datasets = {};
+var svg, xScale, yScaleLeft, yScaleRight, xAxis, yAxisLeft, yAxisRight;
 
- 
- loadVisualization('Files/Diptheria/Diptheria.csv', 'Files/Diptheria/Diptheria_incidence.csv', 'blue', 'red', 'DTP'); // Load default visualization on start
-
-
-
-function loadVisualization(file1, file2, color1, color2, disease) {
-    var w = 700;
-    var h = 350;
-    var padding = 30;
-<<<<<<< HEAD
-var immunizationEventsData;
-=======
-    
-    // Importing events data for tooltips
-    var immunizationEventsData;
-    var incidenceEventsData;
->>>>>>> 2826821b121db0232cedd0d534ac3f922ac7b630
-    if (disease === 'DTP') {
-        immunizationEventsData = 'Files/Diptheria/DTPImmunizationEvents.json';
-        incidenceEventsData = 'Files/Diptheria/DTPIncidenceEvents.json'; 
-    } else if (disease === 'Hepatitis') {
-        immunizationEventsData = 'Files/Hepatitis/HepatitisImmunizationEvents.json';
-        incidenceEventsData = 'Files/Hepatitis/HepatitisIncidenceEvents.json';
-    } else if (disease === 'Measles') {
-        immunizationEventsData = 'Files/Measels/MeaselsImmunizationEvents.json';
-        incidenceEventsData = 'Files/Measels/MeaselsIncidenceEvents.json';
-    }
-   
-    // Row converter remains the same
-    var rowConverter = function(d) {
-        return {
-            date: new Date(+d.YEA, 0),
-            number: +d.Value
+// Preload all datasets when the document is ready
+document.addEventListener('DOMContentLoaded', function() {
+    Promise.all([
+        d3.csv('Files/Diptheria/Diptheria.csv', rowConverter),
+        d3.csv('Files/Diptheria/Diptheria_incidence.csv', rowConverter),
+        d3.json('Files/Diptheria/DTPImmunizationEvents.json'),
+        d3.json('Files/Diptheria/DTPIncidenceEvents.json'),
+        d3.csv('Files/Measels/Measels.csv', rowConverter),
+        d3.csv('Files/Measels/Measels_incidence.csv', rowConverter),
+        d3.json('Files/Measels/MeaselsImmunizationEvents.json'),
+        d3.json('Files/Measels/MeaselsIncidenceEvents.json'),
+        d3.csv('Files/Hepatitis/Hepatitis.csv', rowConverter),
+        d3.csv('Files/Hepatitis/Hepatitis_incidence.csv', rowConverter),
+        d3.json('Files/Hepatitis/HepatitisImmunizationEvents.json'),
+        d3.json('Files/Hepatitis/HepatitisIncidenceEvents.json')
+    ]).then(function(data) {
+        datasets['DTP'] = {
+            immunization: data[0],
+            incidence: data[1],
+            immunizationEvents: data[2],
+            incidenceEvents: data[3]
         };
-    };
+        datasets['Measles'] = {
+            immunization: data[4],
+            incidence: data[5],
+            immunizationEvents: data[6],
+            incidenceEvents: data[7]
+        };
+        datasets['Hepatitis'] = {
+            immunization: data[8],
+            incidence: data[9],
+            immunizationEvents: data[10],
+            incidenceEvents: data[11]
+        };
+        
+        initVisualization(); // Initialize visualization with the first available dataset
+    });
+});
 
-    // Remove any existing SVG
-    d3.select("#chart")
-      .select("svg")
-      .remove();
+function initVisualization() {
+    var w = 800, h = 400, padding = 40;
+ 
 
-    var svg = d3.select("#chart")
-                .append("svg")
-                .attr("width", w)
-                .attr("height", h);
+    svg = d3.select("#chart").append("svg").attr("width", w).attr("height", h);
+
+
+    
+    xScale = d3.scaleTime().range([padding, w - padding]);
+    yScaleLeft = d3.scaleLinear().range([h - padding, padding]);
+    yScaleRight = d3.scaleLinear().range([h - padding, padding]);
+    
+
+
+
+    xAxis = svg.append("g").attr("transform", `translate(0,${h - padding})`);
+    yAxisLeft = svg.append("g").attr("transform", `translate(${padding},0)`);
+    yAxisRight = svg.append("g").attr("transform", `translate(${w - padding},0)`);
+
+    
+
+    updateVisualization('DTP'); // Default visualization
+
+
+}
+
+function updateVisualization(disease) {
+    var currentData = datasets[disease];
+
+    // Update scales based on current data
+    
+    xScale.domain([d3.min(currentData.immunization.concat(currentData.incidence), d => d.date), d3.max(currentData.immunization.concat(currentData.incidence), d => d.date)]);
+    
+    var minValue = d3.min(currentData.immunization, d => d.number);
+
+    yScaleLeft.domain([Math.max(0, minValue - 10), 100]);
+    yScaleRight.domain([0, d3.max(currentData.incidence, d => d.number)]);
+
+    // Transition for updating axes
+    var t = svg.transition().duration(750);
+    xAxis.transition(t).call(d3.axisBottom(xScale));
+    yAxisLeft.transition(t).call(d3.axisLeft(yScaleLeft));
+    yAxisRight.transition(t).call(d3.axisRight(yScaleRight));
+
+    // Update or initialize line for immunization
+    var lineLeft = d3.line()
+        .x(d => xScale(d.date))
+        .y(d => yScaleLeft(d.number));
+
+    var lineRight = d3.line()
+        .x(d => xScale(d.date))
+        .y(d => yScaleRight(d.number));
+
+    // Select or append path for immunization, then transition
+    var pathLeft = svg.selectAll(".line.immunization")
+        .data([currentData.immunization], d => d.date); // Key function for object constancy
+
+    pathLeft.enter()
+        .append("path")
+        .attr("class", "line immunization")
+        .style("stroke", "red")
+        .style("fill", "none")
+        .merge(pathLeft)
+        .transition(t)
+        .attr("d", lineLeft);
+
+    // Remove old paths if any
+    pathLeft.exit().remove();
+
+    // Select or append path for incidence, then transition
+    var pathRight = svg.selectAll(".line.incidence")
+        .data([currentData.incidence], d => d.date); // Key function for object constancy
+
+    pathRight.enter()
+        .append("path")
+        .attr("class", "line incidence")
+        .style("stroke", "blue")
+        .style("fill", "none")
+        .merge(pathRight)
+        .transition(t)
+        .attr("d", lineRight);
+
+    // Remove old paths if any
+    pathRight.exit().remove();
+
+    // Update or initialize tooltips and circles for immunization
+    updateTooltipsAndCircles(currentData);
+}
+
+
+
+function updateTooltipsAndCircles(currentData) {
+    // Remove existing circles before setting up new ones
+    svg.selectAll("circle").remove();
 
     // Tooltip setup
     var tooltip = d3.select("body").append("div")
         .attr("class", "tooltip")
         .style("opacity", 0);
 
-    Promise.all([
-        d3.csv(file1, rowConverter),
-        d3.csv(file2, rowConverter),
-        d3.json(immunizationEventsData),
-        d3.json(incidenceEventsData)
-    ]).then(function(data) {
-        var dataset1 = data[0];
-        var dataset2 = data[1];
-        var immunizationEvents = data[2];
-        var incidenceEvents = data[3];
+    // Add circles and tooltips for immunization dataset
+    currentData.immunization.forEach(function(d) {
+        var year = d.date.getFullYear();
+        if (currentData.immunizationEvents[year]) {
+            svg.append("circle")
+                .attr("cx", xScale(d.date))
+                .attr("cy", yScaleLeft(d.number))
+                .attr("r", 0) // Start with a radius of 0 for the transition effect
+                .style("fill", "red")
+                .transition() // Apply the transition
+                .duration(800)
+                .attr("r", 5) // End with the desired radius
+                .on("end", function() { // Tooltip behavior setup after transition ends
+                    d3.select(this)
+                        .on("mouseover", function(event) {
+                            tooltip.transition()
+                                .duration(300)
+                                .style("opacity", .9)
+                                .style("background-color", "lightsteelblue"); // Tooltip background color for dataset1
+                            tooltip.html("<strong>Year:</strong> " + year + "<br/><strong>Event:</strong> " + currentData.immunizationEvents[year].events + "<br/><strong>Description:</strong> " + currentData.immunizationEvents[year].description)
+                                .style("left", (event.pageX) + "px")
+                                .style("top", (event.pageY - 28) + "px");
+                        })
+                        .on("mouseout", function(d) {
+                            tooltip.transition()
+                                .duration(300)
+                                .style("opacity", 0);
+                        });
+                });
+        }
+    });
 
-        var xScale = d3.scaleTime()
-            .domain([d3.min(dataset1.concat(dataset2), d => d.date), d3.max(dataset1.concat(dataset2), d => d.date)])
-            .range([padding, w - padding]);
-
-        var minValue = d3.min(dataset1, d => d.number);
-        var yScaleLeft = d3.scaleLinear() 
-            .domain([Math.max(0, minValue - 10), 100]) 
-            .range([h - padding, padding]);
-
-
-        var yScaleRight = d3.scaleLinear()
-            .domain([0, d3.max(dataset2, d => d.number)])
-            .range([h - padding, padding]);
-
-        var xAxis = d3.axisBottom().scale(xScale).ticks(10);
-        var yAxisLeft = d3.axisLeft().scale(yScaleLeft).ticks(6);
-        var yAxisRight = d3.axisRight().scale(yScaleRight).ticks(4);
-
-        // Lines for left and right datasets
-        var lineLeft = d3.line()
-            .x(d => xScale(d.date))
-            .y(d => yScaleLeft(d.number));
-
-        var lineRight = d3.line()
-            .x(d => xScale(d.date))
-            .y(d => yScaleRight(d.number));
-
-     
-        svg.append("path").datum(dataset1).attr("class", "line").style("stroke", color1).style("fill", "none")  .attr("d", lineLeft);
-
-       
-       
-      
-        svg.append("path").datum(dataset2).attr("class", "line").style("stroke", color2).style("fill", "none")  .attr("d", lineRight);
-      
-
-
-        // Add axes
-        svg.append("g").attr("transform", `translate(0,${h - padding})`).call(xAxis);
-        svg.append("g").attr("transform", `translate(${padding},0)`).call(yAxisLeft);
-        svg.append("g").attr("transform", `translate(${w - padding},0)`).call(yAxisRight);
-         // Importing events data for tooltips
-  
-
-
-        dataset1.forEach(function(d) {
-            var year = d.date.getFullYear();
-            if (immunizationEvents[year]) {
-                svg.append("circle")
-                    .attr("cx", xScale(d.date))
-                    .attr("cy", yScaleLeft(d.number))
-                    .attr("r", 5)
-                    .style("fill", color1)
-                    .on("mouseover", function(event) {
-                        tooltip.transition()
-                            .duration(300)
-                            .style("opacity", .9)
-                            .style("background-color", "lightsteelblue"); // Tooltip background color for dataset1
-                        tooltip.html("<strong>Year:</strong> " + year + "<br/><strong>Event:</strong> " + immunizationEvents[year].events + "<br/><strong>Description:</strong> " + immunizationEvents[year].description)
-                            .style("left", (event.pageX) + "px")
-                            .style("top", (event.pageY - 28) + "px");
-                    })
-                    .on("mouseout", function(d) {
-                        tooltip.transition()
-                            .duration(300)
-                            .style("opacity", 0);
-                    });
-            }
-        });
-        
-        // Add circles and tooltips for dataset2
-        dataset2.forEach(function(d) {
-            var year = d.date.getFullYear();
-            if (incidenceEvents[year]) {
-                svg.append("circle")
-                    .attr("cx", xScale(d.date))
-                    .attr("cy", yScaleRight(d.number))
-                    .attr("r", 5)
-                    .style("fill", color2)
-                    .on("mouseover", function(event) {
-                        tooltip.transition()
-                            .duration(300)
-                            .style("opacity", .9)
-                            .style("background-color", "lightcoral"); // Tooltip background color for dataset2
-                        tooltip.html("<strong>Year:</strong> " + year + "<br/><strong>Event:</strong> " + incidenceEvents[year].Event + "<br/><strong>Description:</strong> " + incidenceEvents[year].Description)
-                            .style("left", (event.pageX) + "px")
-                            .style("top", (event.pageY - 28) + "px");
-                    })
-                    .on("mouseout", function(d) {
-                        tooltip.transition()
-                            .duration(300)
-                            .style("opacity", 0);
-                    });
-            }
-        });
+    // Add circles and tooltips for incidence dataset
+    currentData.incidence.forEach(function(d) {
+        var year = d.date.getFullYear();
+        if (currentData.incidenceEvents[year]) {
+            svg.append("circle")
+                .attr("cx", xScale(d.date))
+                .attr("cy", yScaleRight(d.number))
+                .attr("r", 0) // Start with a radius of 0 for the transition effect
+                .style("fill", "blue")
+                .transition() // Apply the transition
+                .duration(800)
+                .attr("r", 5) // End with the desired radius
+                .on("end", function() { // Tooltip behavior setup after transition ends
+                    d3.select(this)
+                        .on("mouseover", function(event) {
+                            tooltip.transition()
+                                .duration(300)
+                                .style("opacity", .9)
+                                .style("background-color", "lightcoral"); // Tooltip background color for dataset2
+                            tooltip.html("<strong>Year:</strong> " + year + "<br/><strong>Event:</strong> " + currentData.incidenceEvents[year].Event + "<br/><strong>Description:</strong> " + currentData.incidenceEvents[year].Description)
+                                .style("left", (event.pageX) + "px")
+                                .style("top", (event.pageY - 28) + "px");
+                        })
+                        .on("mouseout", function(d) {
+                            tooltip.transition()
+                                .duration(300)
+                                .style("opacity", 0);
+                        });
+                });
+        }
     });
 }
 
-
-
+function rowConverter(d) {
+    return {
+        date: new Date(+d.YEA, 0),
+        number: +d.Value
+    };
+};

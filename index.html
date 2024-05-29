@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -39,10 +40,10 @@
 <body>
     <h1>Diseases of Australia</h1>
    
-  <button onclick="loadVisualization('Files/Diptheria/Diptheria.csv', 'Files/Diptheria/Diptheria_incidence.csv', 'blue', 'red','DTP')">DTP</button>
-  <button onclick="loadVisualization('Files/Measels/Measels.csv', 'Files/Measels/Measels_incidence.csv', 'blue', 'red','Measles')">Measels</button>
-  <button onclick="loadVisualization('Files/Hepatitis/Hepatitis.csv', 'Files/Hepatitis/Hepatitis_incidence.csv', 'blue', 'red','Hepatitis')">Heaptitis</button>
 
+  <button onclick="updateVisualization('DTP')">DTP</button>
+  <button onclick="updateVisualization('Measles')">Measles</button>
+  <button onclick="updateVisualization('Hepatitis')">Hepatitis</button>
   
     
     <div id="chart"></div>
@@ -52,3 +53,5 @@
 
 
 </html>
+
+
