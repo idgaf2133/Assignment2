@@ -107,7 +107,7 @@ function updateVisualization(disease) {
     pathLeft.enter()
         .append("path")
         .attr("class", "line immunization")
-        .style("stroke", "red")
+        .style("stroke", "blue")
         .style("fill", "none")
         .merge(pathLeft)
         .transition(t)
@@ -123,7 +123,7 @@ function updateVisualization(disease) {
     pathRight.enter()
         .append("path")
         .attr("class", "line incidence")
-        .style("stroke", "blue")
+        .style("stroke", "red")
         .style("fill", "none")
         .merge(pathRight)
         .transition(t)
@@ -166,7 +166,7 @@ function updateTooltipsAndCircles(currentData,t) {
                 .attr("cx", xScale(d.date))
                 .attr("cy", yScaleLeft(d.number))
                 .attr("r", 0) // Start with a radius of 0 for the transition effect
-                .style("fill", "red")
+                .style("fill", "blue")
                 .transition(t) // Apply the transition
                 .attr("r", 5) // End with the desired radius
                 .on("end", function() { // Tooltip behavior setup after transition ends
@@ -197,7 +197,7 @@ function updateTooltipsAndCircles(currentData,t) {
                 .attr("cx", xScale(d.date))
                 .attr("cy", yScaleRight(d.number))
                 .attr("r", 0) // Start with a radius of 0 for the transition effect
-                .style("fill", "blue")
+                .style("fill", "red")
                 .transition(t) // Apply the transition
                 .attr("r", 5) // End with the desired radius
                 .on("end", function() { // Tooltip behavior setup after transition ends
