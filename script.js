@@ -142,8 +142,7 @@ function updateVisualization(disease) {
         // Apply light color to grid lines
     gridX.selectAll("line")
         .style("stroke", "lightgray")
-        .style("stroke-opacity", 0.8)
-        .style("shape-rendering", "crispEdges");
+        .style("stroke-opacity", 0.8);
  
     updateTooltipsAndCircles(currentData,t);
 }
