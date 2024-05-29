@@ -1,7 +1,7 @@
 
 // Global variables to store data and visualization elements
 var datasets = {};
-var svg, xScale, yScaleLeft, yScaleRight, xAxis, yAxisLeft, yAxisRight;
+var svg, xScale, yScaleLeft, yScaleRight, xAxis, yAxisLeft, yAxisRight,w,h,padding;
 
 // Preload all datasets when the document is ready
 document.addEventListener('DOMContentLoaded', function() {
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initVisualization() {
-    var w = 800, h = 400, padding = 40;
+     w = 800, h = 400, padding = 40;
  
 
     svg = d3.select("#chart").append("svg").attr("width", w).attr("height", h);
@@ -60,6 +60,11 @@ function initVisualization() {
     xAxis = svg.append("g").attr("transform", `translate(0,${h - padding})`);
     yAxisLeft = svg.append("g").attr("transform", `translate(${padding},0)`);
     yAxisRight = svg.append("g").attr("transform", `translate(${w - padding},0)`);
+
+     // Append grid lines
+     gridX = svg.append("g").attr("class", "grid");
+   
+ 
 
     
 
@@ -127,13 +132,25 @@ function updateVisualization(disease) {
     // Remove old paths if any
     pathRight.exit().remove();
 
-    // Update or initialize tooltips and circles for immunization
-    updateTooltipsAndCircles(currentData);
+    // Update grid lines
+
+    // Update grid lines
+    gridX.transition(t).call(d3.axisBottom(xScale).ticks(30)
+        .tickSize(-h + 2 * padding)
+        .tickFormat(""))
+        .attr("transform", `translate(0,${h - padding})`);
+        // Apply light color to grid lines
+    gridX.selectAll("line")
+        .style("stroke", "lightgray")
+        .style("stroke-opacity", 0.8)
+        .style("shape-rendering", "crispEdges");
+ 
+    updateTooltipsAndCircles(currentData,t);
 }
 
 
 
-function updateTooltipsAndCircles(currentData) {
+function updateTooltipsAndCircles(currentData,t) {
     // Remove existing circles before setting up new ones
     svg.selectAll("circle").remove();
 
@@ -151,8 +168,7 @@ function updateTooltipsAndCircles(currentData) {
                 .attr("cy", yScaleLeft(d.number))
                 .attr("r", 0) // Start with a radius of 0 for the transition effect
                 .style("fill", "red")
-                .transition() // Apply the transition
-                .duration(800)
+                .transition(t) // Apply the transition
                 .attr("r", 5) // End with the desired radius
                 .on("end", function() { // Tooltip behavior setup after transition ends
                     d3.select(this)
@@ -183,8 +199,7 @@ function updateTooltipsAndCircles(currentData) {
                 .attr("cy", yScaleRight(d.number))
                 .attr("r", 0) // Start with a radius of 0 for the transition effect
                 .style("fill", "blue")
-                .transition() // Apply the transition
-                .duration(800)
+                .transition(t) // Apply the transition
                 .attr("r", 5) // End with the desired radius
                 .on("end", function() { // Tooltip behavior setup after transition ends
                     d3.select(this)
