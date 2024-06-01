@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initVisualization() {
-     w = 800, h = 400, padding = 40;
+     w = 700, h = 350, padding = 40;
  
 
     svg = d3.select("#chart").append("svg").attr("width", w).attr("height", h);
@@ -166,10 +166,56 @@ function updateVisualization(disease) {
         .style("stroke-opacity", 0.8)
         .style("stroke-dasharray", "4,4"); // Adds dashes;
  */
+    addText();
     updateTooltipsAndCircles(currentData,t);
 }
 
 
+function addText(){
+
+    // Remove old axis labels before adding new ones with fade-in transition
+    svg.selectAll(".x.label, .y.label").remove();
+
+    // Append x-axis label with fade-in transition
+    svg.append("text")
+        .attr("class", "x label")
+        .attr("text-anchor", "middle")
+        .attr("x", w / 2)
+        .attr("y", h - padding / 12)
+        .style("opacity", 0) // Initial opacity
+        .text("Time Period (last 30 years)")
+        .transition() // Transition to fade in
+        .duration(2000)
+        .style("opacity", 1); // Final opacity
+
+    // Append y-axis label for left axis with fade-in transition
+    svg.append("text")
+        .attr("class", "y label")
+        .attr("text-anchor", "middle")
+        .attr("x", -h / 2)
+        .attr("y", padding / 1.5)
+        .attr("dy", "-1em")
+        .attr("transform", "rotate(-90)")
+        .style("opacity", 0) // Initial opacity
+        .text("Disease Prevalence Rates")
+        .transition() // Transition to fade in
+        .duration(2000)
+        .style("opacity", 1); // Final opacity
+
+    // Append y-axis label for right axis with fade-in transition
+    svg.append("text")
+        .attr("class", "y label")
+        .attr("text-anchor", "middle")
+        .attr("x", -h / 2)
+        .attr("y", w )
+        .attr("dy", "-0.2em")
+        .attr("transform", "rotate(-90)")
+        .style("opacity", 0) // Initial opacity
+        .text("Immunization Rates")
+        .transition() // Transition to fade in
+        .duration(2000)
+        .style("opacity", 1); // Final opacit
+}
 
 function updateTooltipsAndCircles(currentData,t) {
     // Remove existing circles before setting up new ones
