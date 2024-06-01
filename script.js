@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initVisualization() {
-     w = 700, h = 350, padding = 40;
+     w = 800, h =  400, padding = 40;
  
 
     svg = d3.select("#chart").append("svg").attr("width", w).attr("height", h);
