@@ -1,9 +1,8 @@
 // Global variables to store data and visualization elements
 var datasets = {};
 var svg, xScale, yScaleLeft, yScaleRight, xAxis, yAxisLeft, yAxisRight, gridX, w, h, padding;
-var lineContainer, backgroundRect;
+var lineContainer, backgroundRect, bisect;
 
-// Preload all datasets when the document is ready
 document.addEventListener('DOMContentLoaded', function() {
     Promise.all([
         d3.csv('Files/Diptheria/Diptheria.csv', rowConverter),
@@ -74,32 +73,6 @@ function initVisualization() {
         .attr("class", "axis axis--y axis--y-right")
         .attr("transform", `translate(${w - padding},0)`);
 
-    // Append axis labels
-    svg.append("text")
-        .attr("class", "x label")
-        .attr("text-anchor", "middle")
-        .attr("x", w / 2)
-        .attr("y", h - padding / 12)
-        .text("Time Period (last 30 years)");
-
-    svg.append("text")
-        .attr("class", "y label")
-        .attr("text-anchor", "middle")
-        .attr("x", -h / 2)
-        .attr("y", padding / 1.5)
-        .attr("dy", "-1em")
-        .attr("transform", "rotate(-90)")
-        .text("Disease Prevalence Rate");
-
-    svg.append("text")
-        .attr("class", "y label")
-        .attr("text-anchor", "middle")
-        .attr("x", -h / 2)
-        .attr("y", w - padding / 15)
-        .attr("dy", "-0.2em")
-        .attr("transform", "rotate(-90)")
-        .text("Immunization Rate");
-
     // Append grid lines
     gridX = svg.append("g").attr("class", "grid");
 
@@ -115,6 +88,13 @@ function initVisualization() {
     // Create the line container: where the lines will be drawn
     lineContainer = svg.append('g')
       .attr("clip-path", "url(#clip)");
+
+    // Tooltip setup
+    tooltip = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+
+    bisect = d3.bisector(d => d.date).left;
 
     updateVisualization('DTP'); // Default visualization
 }
@@ -133,7 +113,7 @@ function updateVisualization(disease) {
     xAxis.transition(t).call(d3.axisBottom(xScale));
     yAxisLeft.transition(t).call(d3.axisLeft(yScaleLeft));
     yAxisRight.transition(t).call(d3.axisRight(yScaleRight));
-    
+
     // Apply the background color transition each time the chart is updated
     backgroundRect
         .attr("fill", "white")
@@ -149,6 +129,22 @@ function updateVisualization(disease) {
         .x(d => xScale(d.date))
         .y(d => yScaleRight(d.number));
 
+    // Set line colors based on disease
+    var colorImmunization, colorIncidence, tooltipColor;
+    if (disease === 'DTP') {
+        colorImmunization = "#56B4E9"; // Sky Blue
+        colorIncidence = "#E69F00"; // Orange
+        tooltipColor = "lightsteelblue";
+    } else if (disease === 'Hepatitis') {
+        colorImmunization = "#F0E442"; // Yellow
+        colorIncidence = "#009E73"; // Bluish Green
+        tooltipColor = "lightgreen";
+    } else if (disease === 'Measles') {
+        colorImmunization = "#CC79A7"; // Reddish Purple
+        colorIncidence = "#D55E00"; // Vermillion
+        tooltipColor = "lightcoral";
+    }
+
     // Select or append path for immunization, then transition
     var pathLeft = lineContainer.selectAll(".line.immunization")
         .data([currentData.immunization], d => d.date); // Key function for object constancy
@@ -156,7 +152,7 @@ function updateVisualization(disease) {
     pathLeft.enter()
         .append("path")
         .attr("class", "line immunization")
-        .style("stroke", "blue")
+        .style("stroke", colorImmunization)
         .style("fill", "none")
         .merge(pathLeft)
         .transition(t)
@@ -172,7 +168,7 @@ function updateVisualization(disease) {
     pathRight.enter()
         .append("path")
         .attr("class", "line incidence")
-        .style("stroke", "red")
+        .style("stroke", colorIncidence)
         .style("fill", "none")
         .merge(pathRight)
         .transition(t)
@@ -201,40 +197,53 @@ function updateVisualization(disease) {
         .transition(t)
         .attr("y2", -h + 2 * padding);
 
-    updateTooltipsAndCircles(currentData, t);
+    // Remove old axis labels before adding new ones with fade-in transition
+    svg.selectAll(".x.label, .y.label").remove();
+
+    // Append x-axis label with fade-in transition
+    svg.append("text")
+        .attr("class", "x label")
+        .attr("text-anchor", "middle")
+        .attr("x", w / 2)
+        .attr("y", h - padding / 12)
+        .style("opacity", 0) // Initial opacity
+        .text("Time Period (last 30 years)")
+        .transition() // Transition to fade in
+        .duration(2000)
+        .style("opacity", 1); // Final opacity
+
+    // Append y-axis label for left axis with fade-in transition
+    svg.append("text")
+        .attr("class", "y label")
+        .attr("text-anchor", "middle")
+        .attr("x", -h / 2)
+        .attr("y", padding / 1.5)
+        .attr("dy", "-1em")
+        .attr("transform", "rotate(-90)")
+        .style("opacity", 0) // Initial opacity
+        .text("Disease Prevalence Rate")
+        .transition() // Transition to fade in
+        .duration(2000)
+        .style("opacity", 1); // Final opacity
+
+    // Append y-axis label for right axis with fade-in transition
+    svg.append("text")
+        .attr("class", "y label")
+        .attr("text-anchor", "middle")
+        .attr("x", -h / 2)
+        .attr("y", w - padding / 15)
+        .attr("dy", "-0.2em")
+        .attr("transform", "rotate(-90)")
+        .style("opacity", 0) // Initial opacity
+        .text("Immunization Rate")
+        .transition() // Transition to fade in
+        .duration(2000)
+        .style("opacity", 1); // Final opacity
+
+    updateTooltipsAndCircles(currentData, t, colorImmunization, colorIncidence, tooltipColor);
 }
 
-function updateAxesAndLines(currentData) {
-    var t = svg.transition().duration(750);
-
-    yScaleLeft.domain([Math.max(0, d3.min(currentData.immunization, d => d.number) - 10), d3.max(currentData.immunization, d => d.number) + 10]);
-    yScaleRight.domain([0, d3.max(currentData.incidence, d => d.number)]);
-
-    yAxisLeft.transition(t).call(d3.axisLeft(yScaleLeft));
-    yAxisRight.transition(t).call(d3.axisRight(yScaleRight));
-
-    svg.selectAll(".line.immunization").transition(t).attr("d", d3.line()
-        .x(d => xScale(d.date))
-        .y(d => yScaleLeft(d.number))
-    );
-    svg.selectAll(".line.incidence").transition(t).attr("d", d3.line()
-        .x(d => xScale(d.date))
-        .y(d => yScaleRight(d.number))
-    );
-
-    // Update circles
-    svg.selectAll("circle.immunization")
-        .transition(t)
-        .attr("cx", d => xScale(d.date))
-        .attr("cy", d => yScaleLeft(d.number));
-
-    svg.selectAll("circle.incidence")
-        .transition(t)
-        .attr("cx", d => xScale(d.date))
-        .attr("cy", d => yScaleRight(d.number));
-}
-
-function updateTooltipsAndCircles(currentData, t) {
+function updateTooltipsAndCircles(currentData, t, colorImmunization, colorIncidence, tooltipColor) {
     // Remove existing circles before setting up new ones
     svg.selectAll("circle").remove();
 
@@ -252,12 +261,12 @@ function updateTooltipsAndCircles(currentData, t) {
                 .attr("cx", xScale(d.date))
                 .attr("cy", yScaleLeft(d.number))
                 .attr("r", 5)
-                .style("fill", "blue")
+                .style("fill", colorImmunization) // Color based on disease
                 .on("mouseover", function(event) {
                     tooltip.transition()
                         .duration(300)
                         .style("opacity", .9)
-                        .style("background-color", "lightsteelblue"); // Tooltip background color for dataset1
+                        .style("background-color", tooltipColor); // Tooltip background color
                     tooltip.html("<strong>Year:</strong> " + year + "<br/><strong>Event:</strong> " + currentData.immunizationEvents[year].events + "<br/><strong>Description:</strong> " + currentData.immunizationEvents[year].description)
                         .style("left", (event.pageX) + "px")
                         .style("top", (event.pageY - 28) + "px");
@@ -279,12 +288,12 @@ function updateTooltipsAndCircles(currentData, t) {
                 .attr("cx", xScale(d.date))
                 .attr("cy", yScaleRight(d.number))
                 .attr("r", 5)
-                .style("fill", "red")
+                .style("fill", colorIncidence) // Color based on disease
                 .on("mouseover", function(event) {
                     tooltip.transition()
                         .duration(300)
                         .style("opacity", .9)
-                        .style("background-color", "lightcoral"); // Tooltip background color for dataset2
+                        .style("background-color", tooltipColor); // Tooltip background color
                     tooltip.html("<strong>Year:</strong> " + year + "<br/><strong>Event:</strong> " + currentData.incidenceEvents[year].Event + "<br/><strong>Description:</strong> " + currentData.incidenceEvents[year].Description)
                         .style("left", (event.pageX) + "px")
                         .style("top", (event.pageY - 28) + "px");
