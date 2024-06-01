@@ -3,6 +3,7 @@
 var datasets = {};
 var svg, xScale, yScaleLeft, yScaleRight, xAxis, yAxisLeft, yAxisRight,w,h,padding;
 
+
 // Preload all datasets when the document is ready
 document.addEventListener('DOMContentLoaded', function() {
     Promise.all([
@@ -43,13 +44,14 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initVisualization() {
-     w = 800, h =  400, padding = 40;
+     w = 700, h = 350, padding = 40;
  
 
     svg = d3.select("#chart").append("svg").attr("width", w).attr("height", h);
 
 
     
+   
     xScale = d3.scaleTime().range([padding, w - padding]);
     yScaleLeft = d3.scaleLinear().range([h - padding, padding]);
     yScaleRight = d3.scaleLinear().range([h - padding, padding]);
@@ -65,16 +67,16 @@ function initVisualization() {
      gridX = svg.append("g").attr("class", "grid");
 
    
- 
+    // window.addEventListener("resize", resize);
 
     
 
-    updateVisualization('DTP'); // Default visualization
+     showLineChart('DTP'); // Default visualization
 
 
 }
 
-function updateVisualization(disease) {
+function showLineChart(disease) {
     var currentData = datasets[disease];
 
     // Update scales based on current data
@@ -145,31 +147,32 @@ function updateVisualization(disease) {
         .style("stroke", "lightgray")
         .style("stroke-opacity", 0.8)
         .style("stroke-dasharray", "4,4"); // Adds dashes;
-/*
-        // Update grid lines for left y-axis
-    gridYLeft.transition(t).call(d3.axisLeft(yScaleLeft).ticks(10)
-        .tickSize(-w + 2 * padding)
-        .tickFormat(""))
-        .attr("transform", `translate(${padding},0)`);
-    gridYLeft.selectAll("line")
-        .style("stroke", "lightgray")
-        .style("stroke-opacity", 0.8)
-        .style("stroke-dasharray", "4,4"); // Adds dashes;
 
-    // Update grid lines for right y-axis
-    gridYRight.transition(t).call(d3.axisRight(yScaleRight).ticks(10)
-        .tickSize(-w + 2 * padding)
-        .tickFormat(""))
-        .attr("transform", `translate(${w - padding},0)`);
-    gridYRight.selectAll("line")
-        .style("stroke", "lightgray")
-        .style("stroke-opacity", 0.8)
-        .style("stroke-dasharray", "4,4"); // Adds dashes;
- */
     addText();
     updateTooltipsAndCircles(currentData,t);
+        // Dynamically create the button to visualize scatter plot
+    var buttonContainer = document.getElementById("button-container");
+    buttonContainer.innerHTML = ""; // Clear any existing buttons
+
+    var scatterPlotButton = document.createElement("button");
+    scatterPlotButton.innerHTML = "Visualize Scatterplot";
+    scatterPlotButton.className = "vis-button";
+    scatterPlotButton.onclick = function() {
+        showScatterPlot(disease);
+    };
+
+    buttonContainer.appendChild(scatterPlotButton);
 
    
+}
+
+function showScatterPlot(disease) {
+
+
+
+
+
+
 }
 
 function addText(){

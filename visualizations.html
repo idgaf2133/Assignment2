@@ -15,26 +15,30 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <link rel="stylesheet" href="styles.css">
     <script src="transition.js"></script>
+    <script src="script.js"></script>
 </head>
 <body onload="fadeIn()">
     <!-- Navigation Bar -->
     <nav id="main-nav">
         <ul class="navbar">
             <li><button class="nav-button" onclick="fadeOutAndRedirect('main.html')">Home</button></li>
-            <li><button class="nav-button" onclick="updateVisualization('DTP')">DTP</button></li>
-            <li><button class="nav-button" onclick="updateVisualization('Measles')">Measles</button></li>
-            <li><button class="nav-button" onclick="updateVisualization('Hepatitis')">Hepatitis</button></li>
+            <li><button class="nav-button" onclick="showLineChart('DTP')">DTP</button></li>
+            <li><button class="nav-button" onclick="showLineChart('Measles')">Measles</button></li>
+            <li><button class="nav-button" onclick="showLineChart('Hepatitis')">Hepatitis</button></li>
         </ul>
     </nav>
 
     <!-- Visualization Controls -->
-    <div id="visualization-controls" class="center">
-        <button class="vis-button" onclick="showLineChart()">Show Line Chart</button>
-        <button class="vis-button" onclick="showScatterPlot()">Show Scatter Plot</button>
+ 
+
+   <!-- Visualization Area -->
+    <div id="chart-container">
+        <div id="chart"></div>
+        <!-- Container for dynamic buttons -->
+        <div id="button-container" class="center"></div>
     </div>
 
-    <!-- Visualization Area -->
-    <div id="chart"></div>
-    <script src="script.js"></script>
+    
+
 </body>
 </html>
