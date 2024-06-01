@@ -197,7 +197,7 @@ function AddText(){
         .attr("dy", "-1em")
         .attr("transform", "rotate(-90)")
         .style("opacity", 0) // Initial opacity
-        .text("Disease Prevalence Rate")
+        .text("Disease Prevalence Rates")
         .transition() // Transition to fade in
         .duration(2000)
         .style("opacity", 1); // Final opacity
@@ -211,7 +211,7 @@ function AddText(){
         .attr("dy", "-0.2em")
         .attr("transform", "rotate(-90)")
         .style("opacity", 0) // Initial opacity
-        .text("Immunization Rate")
+        .text("Immunization Rates")
         .transition() // Transition to fade in
         .duration(2000)
         .style("opacity", 1); // Final opacit
