@@ -63,6 +63,7 @@ function initVisualization() {
 
      // Append grid lines
      gridX = svg.append("g").attr("class", "grid");
+
    
  
 
@@ -142,8 +143,29 @@ function updateVisualization(disease) {
         // Apply light color to grid lines
     gridX.selectAll("line")
         .style("stroke", "lightgray")
-        .style("stroke-opacity", 0.8);
- 
+        .style("stroke-opacity", 0.8)
+        .style("stroke-dasharray", "4,4"); // Adds dashes;
+/*
+        // Update grid lines for left y-axis
+    gridYLeft.transition(t).call(d3.axisLeft(yScaleLeft).ticks(10)
+        .tickSize(-w + 2 * padding)
+        .tickFormat(""))
+        .attr("transform", `translate(${padding},0)`);
+    gridYLeft.selectAll("line")
+        .style("stroke", "lightgray")
+        .style("stroke-opacity", 0.8)
+        .style("stroke-dasharray", "4,4"); // Adds dashes;
+
+    // Update grid lines for right y-axis
+    gridYRight.transition(t).call(d3.axisRight(yScaleRight).ticks(10)
+        .tickSize(-w + 2 * padding)
+        .tickFormat(""))
+        .attr("transform", `translate(${w - padding},0)`);
+    gridYRight.selectAll("line")
+        .style("stroke", "lightgray")
+        .style("stroke-opacity", 0.8)
+        .style("stroke-dasharray", "4,4"); // Adds dashes;
+ */
     updateTooltipsAndCircles(currentData,t);
 }
 
