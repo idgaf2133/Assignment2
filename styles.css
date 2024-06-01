@@ -15,6 +15,40 @@
 
 body {
     font-family: Arial, sans-serif;
+    background-color: #FFFFFF;
+    color: #333333;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.intro-text {
+    text-align: center;
+    width: 80%;
+    margin: 20px auto;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #666666;
+}
+
+.center {
+    text-align: center;
+}
+
+.view-button, .vis-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 14px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 10px;
+}
+
+.view-button:hover, .vis-button:hover {
+    background-color: #45a049;
 }
 
 #main-nav {
@@ -43,22 +77,14 @@ body {
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    margin: 0 10px; /* Add margin to space out buttons */
+    margin: 0 10px;
     transition: background-color 0.3s ease;
+    cursor: pointer;
 }
 
 #main-nav .navbar li button:hover {
     background-color: #ddd;
     color: black;
-}
-
-h1 {
-    text-align: center;
-    margin-top: 20px;
-}
-p {
-    font-size: 16px;
-    line-height: 1.5;
 }
 
 #chart {

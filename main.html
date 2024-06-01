@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,41 +9,26 @@
     <meta name="author" content="Nikitha Bamunuarachchi" />
 
     <!-- Title -->
-    <title>Assignemnt-2</title> 
+    <title>Assignment-2</title> 
 
     <!-- D3.js library -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <link rel="stylesheet" href="styles.css">
-  
-
-    
+    <script src="transition.js"></script>
 </head>
-<body>
+<body onload="fadeIn()">
     <h1>Impact of Immunization on Disease Incidence Rates: A Data-Driven Analysis of Diphtheria, Measles, and Hepatitis</h1>
    
-  <!-- Introduction -->
-  <p style="text-align: center; width: 80%; margin: 20px auto;">
-    Vaccination plays a crucial role in preventing infectious diseases and reducing their incidence rates. This analysis focuses on three significant diseases: diphtheria, measles, and hepatitis. By examining immunization and incidence data, we aim to highlight the impact of vaccination efforts over time and underscore the importance of maintaining high immunization coverage to protect public health.
- </p>
-  
- <!-- Navigation Bar -->
- <nav id="main-nav">
-    <ul class="navbar">
-        <li><button onclick="updateVisualization('DTP')">DTP</button></li>
-        <li><button onclick="updateVisualization('Measles')">Measles</button></li>
-        <li><button onclick="updateVisualization('Hepatitis')">Hepatitis</button></li>
-    </ul>
-</nav>
+    <!-- Introduction -->
+    <p class="intro-text">
+        Vaccination plays a crucial role in preventing infectious diseases and reducing their incidence rates. This analysis focuses on three significant diseases: diphtheria, measles, and hepatitis. By examining immunization and incidence data, we aim to highlight the impact of vaccination efforts over time and underscore the importance of maintaining high immunization coverage to protect public health.
+    </p>
 
-
-
-    
-    <div id="chart"></div>
-    <script src="script.js"></script>
+    <!-- Button to View Visualizations -->
+    <div class="center">
+        <button class="view-button" onclick="fadeOutAndRedirect('visualizations.html')">View Visualizations</button>
+    </div>
 </body>
-
-
-
 </html>
 
 
