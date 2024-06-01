@@ -168,8 +168,54 @@ function updateVisualization(disease) {
  */
     addText();
     updateTooltipsAndCircles(currentData,t);
+
+    AddText();
 }
 
+function AddText(){
+    // Remove old axis labels before adding new ones with fade-in transition
+    svg.selectAll(".x.label, .y.label").remove();
+
+    // Append x-axis label with fade-in transition
+    svg.append("text")
+        .attr("class", "x label")
+        .attr("text-anchor", "middle")
+        .attr("x", w / 2)
+        .attr("y", h - padding / 12)
+        .style("opacity", 0) // Initial opacity
+        .text("Time Period (last 30 years)")
+        .transition() // Transition to fade in
+        .duration(2000)
+        .style("opacity", 1); // Final opacity
+
+    // Append y-axis label for left axis with fade-in transition
+    svg.append("text")
+        .attr("class", "y label")
+        .attr("text-anchor", "middle")
+        .attr("x", -h / 2)
+        .attr("y", padding / 1.5)
+        .attr("dy", "-1em")
+        .attr("transform", "rotate(-90)")
+        .style("opacity", 0) // Initial opacity
+        .text("Disease Prevalence Rate")
+        .transition() // Transition to fade in
+        .duration(2000)
+        .style("opacity", 1); // Final opacity
+
+    // Append y-axis label for right axis with fade-in transition
+    svg.append("text")
+        .attr("class", "y label")
+        .attr("text-anchor", "middle")
+        .attr("x", -h / 2)
+        .attr("y", w - padding / 15)
+        .attr("dy", "-0.2em")
+        .attr("transform", "rotate(-90)")
+        .style("opacity", 0) // Initial opacity
+        .text("Immunization Rate")
+        .transition() // Transition to fade in
+        .duration(2000)
+        .style("opacity", 1); // Final opacit
+}
 
 function addText(){
 
