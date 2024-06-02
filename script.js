@@ -67,7 +67,7 @@ function initVisualization() {
      gridX = svg.append("g").attr("class", "grid");
 
    
-    // window.addEventListener("resize", resize);
+  
 
     
 
@@ -167,13 +167,74 @@ function showLineChart(disease) {
 }
 
 function showScatterPlot(disease) {
+    var currentData = datasets[disease];
+
+    // Transition to hide line chart elements including y-axis
+    svg.selectAll(".line, .y.label, .axis--y").transition().duration(750).style("opacity", 0).remove();
+
+    // Update scales for scatter plot
+    xScale.domain([0, 100]); // Immunization rates on x-axis (0 to 100%)
+    yScaleLeft.domain([0, d3.max(currentData.incidence, d => d.number)]); // Incidence rates on y-axis
+
+    // Transition for updating axes
+    var t = svg.transition().duration(750);
+    xAxis.transition(t).call(d3.axisBottom(xScale));
+    yAxisLeft.transition(t).call(d3.axisLeft(yScaleLeft));
+     
+    // Remove existing circles before setting up new ones
+    svg.selectAll("circle").remove();
 
 
+    // Append circles for scatter plot with transitions
+    var circles = svg.selectAll(".dot")
+        .data(currentData.immunization.map((d, i) => ({ 
+            immunization: d.number, 
+            incidence: currentData.incidence[i].number, 
+            date: d.date 
+        })));
 
+    circles.enter().append("circle")
+        .attr("class", "dot")
+        .attr("cx", d => xScale(d.immunization))
+        .attr("cy", d => yScaleLeft(d.incidence))
+        .attr("r", 0)
+        .style("fill", "blue")
+        .transition(t)
+        .attr("r", 5);
 
+    circles.exit().transition(t).attr("r", 0).remove();
 
+    // Tooltip setup
+    var tooltip = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
 
+    svg.selectAll(".dot")
+        .on("mouseover", function(event, d) {
+            tooltip.transition().duration(300).style("opacity", .9);
+            tooltip.html("<strong>Date:</strong> " + d.date.getFullYear() + "<br/><strong>Immunization:</strong> " + d.immunization + "%<br/><strong>Incidence:</strong> " + d.incidence)
+                .style("left", (event.pageX) + "px")
+                .style("top", (event.pageY - 28) + "px");
+        })
+        .on("mouseout", function(d) {
+            tooltip.transition().duration(300).style("opacity", 0);
+        });
+
+    // Add button to switch back to line chart
+    var buttonContainer = document.getElementById("button-container");
+    buttonContainer.innerHTML = ""; // Clear any existing buttons
+
+    var lineChartButton = document.createElement("button");
+    lineChartButton.innerHTML = "Switch to Line Chart";
+    lineChartButton.className = "vis-button";
+    lineChartButton.onclick = function() {
+        showLineChart(disease);
+    };
+
+    buttonContainer.appendChild(lineChartButton);
 }
+
+
 
 function addText(){
     // Remove old axis labels before adding new ones with fade-in transition
