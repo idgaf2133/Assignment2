@@ -75,97 +75,7 @@ function initVisualization() {
 
 
 }
-/*
-function showLineChart(disease) {
-    var currentData = datasets[disease];
 
-    // Update scales based on current data
-    
-    xScale.domain([d3.min(currentData.immunization.concat(currentData.incidence), d => d.date), d3.max(currentData.immunization.concat(currentData.incidence), d => d.date)]);
-    
-    var minValue = d3.min(currentData.immunization, d => d.number);
-
-    yScaleLeft.domain([Math.max(0, minValue - 10), 100]);
-    yScaleRight.domain([0, d3.max(currentData.incidence, d => d.number)]);
-
-    // Transition for updating axes
-    var t = svg.transition().duration(750);
-    xAxis.transition(t).call(d3.axisBottom(xScale));
-    yAxisLeft.transition(t).call(d3.axisLeft(yScaleLeft));
-    yAxisRight.transition(t).call(d3.axisRight(yScaleRight));
-
-    // Update or initialize line for immunization
-    var lineLeft = d3.line()
-        .x(d => xScale(d.date))
-        .y(d => yScaleLeft(d.number));
-
-    var lineRight = d3.line()
-        .x(d => xScale(d.date))
-        .y(d => yScaleRight(d.number));
-
-    // Select or append path for immunization, then transition
-    var pathLeft = svg.selectAll(".line.immunization")
-        .data([currentData.immunization], d => d.date); // Key function for object constancy
-
-    pathLeft.enter()
-        .append("path")
-        .attr("class", "line immunization")
-        .style("stroke", "blue")
-        .style("fill", "none")
-        .merge(pathLeft)
-        .transition(t)
-        .attr("d", lineLeft);
-
-    // Remove old paths if any
-    pathLeft.exit().remove();
-
-    // Select or append path for incidence, then transition
-    var pathRight = svg.selectAll(".line.incidence")
-        .data([currentData.incidence], d => d.date); // Key function for object constancy
-
-    pathRight.enter()
-        .append("path")
-        .attr("class", "line incidence")
-        .style("stroke", "red")
-        .style("fill", "none")
-        .merge(pathRight)
-        .transition(t)
-        .attr("d", lineRight);
-
-    // Remove old paths if any
-    pathRight.exit().remove();
-
-    // Update grid lines
-
-    // Update grid lines
-    gridX.transition(t).call(d3.axisBottom(xScale).ticks(30)
-        .tickSize(-h + 2 * padding)
-        .tickFormat(""))
-        .attr("transform", `translate(0,${h - padding})`);
-        // Apply light color to grid lines
-    gridX.selectAll("line")
-        .style("stroke", "lightgray")
-        .style("stroke-opacity", 0.8)
-        .style("stroke-dasharray", "4,4"); // Adds dashes;
-
-    addText();
-    updateTooltipsAndCircles(currentData,t);
-        // Dynamically create the button to visualize scatter plot
-    var buttonContainer = document.getElementById("button-container");
-    buttonContainer.innerHTML = ""; // Clear any existing buttons
-
-    var scatterPlotButton = document.createElement("button");
-    scatterPlotButton.innerHTML = "Switch to Scatterplot";
-    scatterPlotButton.className = "vis-button";
-    scatterPlotButton.onclick = function() {
-        showScatterPlot(disease);
-    };
-
-    buttonContainer.appendChild(scatterPlotButton);
-
-   
-}
-*/
 
 function showLineChart(disease) {
     var currentData = datasets[disease];
@@ -222,7 +132,10 @@ function showLineChart(disease) {
 
     pathRight.exit().remove();
 
-    // Update grid lines
+   
+ 
+
+
     gridX.transition(t).call(d3.axisBottom(xScale).ticks(30)
         .tickSize(-h + 2 * padding)
         .tickFormat(""))
@@ -328,7 +241,10 @@ function showScatterPlot(disease) {
     var currentData = datasets[disease];
 
     // Hide line chart elements including lines, y-axis labels, and grid lines
-    //svg.selectAll(".line, .y.label, .axis--y, .grid, .line-circle").transition().duration(750).style("opacity", 0).remove();
+    svg.selectAll(".line-circle").transition().duration(750).attr("r", 0).remove();
+    svg.selectAll(".line").transition().duration(750).attr("opacity", 0).remove();
+    
+
 
     // Update scales for scatter plot
     xScale.domain([0, 100]); // Immunization rates on x-axis (0 to 100%)
