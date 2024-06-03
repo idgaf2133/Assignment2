@@ -444,7 +444,7 @@ function addScatterPlotText() {
         .attr("class", "y label")
         .attr("text-anchor", "middle")
         .attr("x", -h / 2)
-        .attr("y", padding / 1.5)
+        .attr("y", padding-12 )
         .attr("dy", "-1em")
         .attr("transform", "rotate(-90)")
         .style("opacity", 0) // Initial opacity
@@ -477,7 +477,7 @@ function addLineChartText(){
         .attr("class", "y label")
         .attr("text-anchor", "middle")
         .attr("x", -h / 2)
-        .attr("y", padding / 1.5)
+        .attr("y", padding-10 )
         .attr("dy", "-1em")
         .attr("transform", "rotate(-90)")
         .style("opacity", 0) // Initial opacity
@@ -491,7 +491,7 @@ function addLineChartText(){
         .attr("class", "y label")
         .attr("text-anchor", "middle")
         .attr("x", -h / 2)
-        .attr("y", w - padding / 15)
+        .attr("y", w - padding /50)
         .attr("dy", "-0.2em")
         .attr("transform", "rotate(-90)")
         .style("opacity", 0) // Initial opacity
