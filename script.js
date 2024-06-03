@@ -79,6 +79,7 @@ function showLineChart(disease) {
     //gridX = svg.append("g").attr("class", "grid");
     // Remove scatter plot circles
     svg.selectAll(".dot").transition().duration(750).attr("r", 0).remove();
+    svg.selectAll(".trend-line").transition().attr("opacity", 0).remove();
 
     //append right axis
 
@@ -266,6 +267,7 @@ function showScatterPlot(disease) {
     // Hide line chart elements including lines, y-axis labels, and grid lines
     svg.selectAll(".line-circle").transition().duration(750).attr("r", 0).remove();
     svg.selectAll(".line,.grid,.y-axis-right").transition().duration(750).attr("opacity", 0).remove();
+
     
 
 
@@ -355,6 +357,41 @@ function showScatterPlot(disease) {
 
     addScatterPlotText();
 
+     // Prepare the data for regression
+     var xData = currentData.immunization.map(d => d.number);
+     var yData = currentData.incidence.map(d => d.number);
+ 
+     // Calculate the linear regression
+     var regression = linearRegression(xData, yData);
+ 
+     // Generate points for the trend line
+     var trendLine = [
+         { x: d3.min(xData), y: regression.slope * d3.min(xData) + regression.intercept },
+         { x: d3.max(xData), y: regression.slope * d3.max(xData) + regression.intercept }
+     ];
+ 
+     // Add the trend line to the scatter plot with a fade-in transition
+    var trend = svg.selectAll(".trend-line")
+        .data([trendLine]);
+
+    trend.enter().append("line")
+        .attr("class", "trend-line")
+        .attr("x1", xScale(trendLine[0].x))
+        .attr("y1", yScaleLeft(trendLine[0].y))
+        .attr("x2", xScale(trendLine[1].x))
+        .attr("y2", yScaleLeft(trendLine[1].y))
+        .style("stroke", "green")
+        .style("stroke-width", 2)
+        .style("opacity", 0)
+        .transition()
+        .duration(750)
+        .style("opacity", 1);
+
+    // Add fade-out transition for the exit selection
+    trend.exit()
+        .transition()
+        .style("opacity", 0)
+        .remove();
     // Add button to switch back to line chart
     var buttonContainer = document.getElementById("button-container");
     buttonContainer.innerHTML = ""; // Clear any existing buttons
@@ -369,6 +406,54 @@ function showScatterPlot(disease) {
     buttonContainer.appendChild(lineChartButton);
 }
 
+
+
+/*
+function addTrendLine(data) {
+    // Prepare the data for regression
+    var xData = data.immunization.map(d => d.number);
+    var yData = data.incidence.map(d => d.number);
+
+    // Calculate the linear regression
+    var regression = linearRegression(xData, yData);
+
+    // Generate points for the trend line
+    var trendLine = [
+        { x: d3.min(xData), y: regression.slope * d3.min(xData) + regression.intercept },
+        { x: d3.max(xData), y: regression.slope * d3.max(xData) + regression.intercept }
+    ];
+
+    // Add the trend line to the scatter plot with a fade-in transition
+    svg.append("line")
+    .attr("class", "trend-line")
+    .attr("x1", xScale(trendLine[0].x))
+    .attr("y1", yScaleLeft(trendLine[0].y))
+    .attr("x2", xScale(trendLine[1].x))
+    .attr("y2", yScaleLeft(trendLine[1].y))
+    .style("stroke", "green")
+    .style("stroke-width", 2)
+    .style("opacity", 0)
+    .transition()
+    .duration(750)
+    .style("opacity", 1);
+
+    
+}
+*/
+
+
+function linearRegression(x, y) {
+    var n = x.length;
+    var sumX = d3.sum(x);
+    var sumY = d3.sum(y);
+    var sumXY = d3.sum(x.map((d, i) => d * y[i]));
+    var sumXX = d3.sum(x.map(d => d * d));
+
+    var slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
+    var intercept = (sumY - slope * sumX) / n;
+
+    return { slope: slope, intercept: intercept };
+}
 function addScatterPlotText() {
     // Remove old axis labels before adding new ones with fade-in transition
     svg.selectAll(".x.label, .y.label").remove();
