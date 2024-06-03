@@ -62,7 +62,7 @@ function initVisualization() {
     xAxis = svg.append("g").attr("transform", `translate(0,${h - padding})`);
     yAxisLeft = svg.append("g").attr("transform", `translate(${padding},0)`);
 
-    yAxisRight = svg.append("g").attr("transform", `translate(${w - padding},0)`);
+    //yAxisRight = svg.append("g").attr("transform", `translate(${w - padding},0)`);
 
     // Append grid lines
     //gridX = svg.append("g").attr("class", "grid");
@@ -90,10 +90,22 @@ function showLineChart(disease) {
     yScaleLeft.domain([Math.max(0, minValue - 10), 100]);
     yScaleRight.domain([0, d3.max(currentData.incidence, d => d.number)]);
 
+
+
     // Transition for updating axes
     var t = svg.transition().duration(750);
     xAxis.transition(t).call(d3.axisBottom(xScale));
     yAxisLeft.transition(t).call(d3.axisLeft(yScaleLeft));
+
+
+
+       // Remove and recreate the right y-axis for transition
+    svg.selectAll(".y-axis-right").remove();
+    yAxisRight = svg.append("g")
+        .attr("class", "y-axis-right")
+        .attr("transform", `translate(${w - padding},0)`)
+        .call(d3.axisRight(yScaleRight))
+        .transition(t);
     yAxisRight.transition(t).call(d3.axisRight(yScaleRight));
 
     // Update or initialize line for immunization
@@ -117,7 +129,7 @@ function showLineChart(disease) {
         .transition(t)
         .attr("d", lineLeft);
 
-    pathLeft.exit().remove();
+    pathLeft.exit().transition(t).remove();
 
     var pathRight = svg.selectAll(".line.incidence")
         .data([currentData.incidence], d => d.date);
@@ -131,10 +143,11 @@ function showLineChart(disease) {
         .transition(t)
         .attr("d", lineRight);
 
-    pathRight.exit().remove();
+    pathRight.exit().transition(t).remove();
 
     svg.selectAll(".grid").remove(); // Remove existing grid
-    gridX = svg.append("g")
+
+    gridX = svg.append("g") //append grid
         .attr("class", "grid")
         .attr("transform", `translate(0,${h - padding})`)
         .call(d3.axisBottom(xScale)
@@ -156,7 +169,7 @@ function showLineChart(disease) {
     
 
 
-    addText();
+    addLineChartText();
     updateTooltipsAndCircles(currentData, t);
 
     // Dynamically create the button to visualize scatter plot
@@ -252,7 +265,7 @@ function showScatterPlot(disease) {
 
     // Hide line chart elements including lines, y-axis labels, and grid lines
     svg.selectAll(".line-circle").transition().duration(750).attr("r", 0).remove();
-    svg.selectAll(".line,.grid").transition().duration(750).attr("opacity", 0).remove();
+    svg.selectAll(".line,.grid,.y-axis-right").transition().duration(750).attr("opacity", 0).remove();
     
 
 
@@ -264,6 +277,8 @@ function showScatterPlot(disease) {
     var t = svg.transition().duration(750);
     xAxis.transition(t).call(d3.axisBottom(xScale));
     yAxisLeft.transition(t).call(d3.axisLeft(yScaleLeft));
+
+
 
     // Append circles for scatter plot with transitions
     var circles = svg.selectAll(".dot")
@@ -315,7 +330,7 @@ function showScatterPlot(disease) {
 }
 
 
-function addText(){
+function addLineChartText(){
     // Remove old axis labels before adding new ones with fade-in transition
     svg.selectAll(".x.label, .y.label").remove();
 
