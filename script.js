@@ -215,7 +215,7 @@ function updateTooltipsAndCircles(currentData, t) {
                                 .duration(300)
                                 .style("opacity", .9)
                                 .style("background-color", "lightsteelblue"); // Tooltip background color for dataset1
-                            tooltip.html("<strong>Year:</strong> " + year + "<br/><strong>Event:</strong> " + currentData.immunizationEvents[year].events + "<br/><strong>Description:</strong> " + currentData.immunizationEvents[year].description)
+                            tooltip.html("<strong>Year:</strong> " + year + "<strong> Immunization:</strong> " + d.number+"%" + "<br/><strong>Event:</strong> " + currentData.immunizationEvents[year].Event + "<br/><strong>Description:</strong> " + currentData.immunizationEvents[year].Description)
                                 .style("left", (event.pageX) + "px")
                                 .style("top", (event.pageY - 28) + "px");
                         })
@@ -247,7 +247,7 @@ function updateTooltipsAndCircles(currentData, t) {
                                 .duration(300)
                                 .style("opacity", .9)
                                 .style("background-color", "lightcoral"); // Tooltip background color for dataset2
-                            tooltip.html("<strong>Year:</strong> " + year + "<br/><strong>Event:</strong> " + currentData.incidenceEvents[year].Event + "<br/><strong>Description:</strong> " + currentData.incidenceEvents[year].Description)
+                            tooltip.html("<strong>Year:</strong> " + year + "<strong>  Incidence:</strong> " + d.number + "<br/><strong>Event:</strong> " + currentData.incidenceEvents[year].Event + "<br/><strong>Description:</strong> " + currentData.incidenceEvents[year].Description)
                                 .style("left", (event.pageX) + "px")
                                 .style("top", (event.pageY - 28) + "px");
                         })

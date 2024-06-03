@@ -1,58 +1,58 @@
 {
     "1996": {
-        "events": "National Measles Control Campaign",
-        "description": "Initiative: A mass immunization campaign targeting children aged 5-12 years to increase measles vaccination coverage. Outcome: Significant increase in vaccination rates and reduction in measles incidence."
+        "Event": "National Measles Control Campaign",
+        "Description": "Initiative: A mass immunization campaign targeting children aged 5-12 years to increase measles vaccination coverage. Outcome: Significant increase in vaccination rates and reduction in measles incidence."
     },
     "1997": {
-        "events": "Implementation of the Two-Dose Schedule",
-        "description": "Policy Change: National Immunization Program updated to include a second dose of the measles-mumps-rubella (MMR) vaccine at age 4. Purpose: To ensure higher immunity and prevent outbreaks."
+        "Event": "Implementation of the Two-Dose Schedule",
+        "Description": "Policy Change: National Immunization Program updated to include a second dose of the measles-mumps-rubella (MMR) vaccine at age 4. Purpose: To ensure higher immunity and prevent outbreaks."
     },
     "1998": {
-        "events": "School-Based Immunization Programs",
-        "description": "Initiative: Introduction of school-based vaccination programs to reach older children who missed earlier MMR doses. Impact: Increased vaccination coverage among school-aged children."
+        "Event": "School-Based Immunization Programs",
+        "Description": "Initiative: Introduction of school-based vaccination programs to reach older children who missed earlier MMR doses. Impact: Increased vaccination coverage among school-aged children."
     },
     "2000": {
-        "events": "National Measles Elimination Goal",
-        "description": "Objective: Set goal to eliminate measles by 2005, aligning with WHO regional goals. Strategies: High vaccination coverage, enhanced surveillance, rapid outbreak response."
+        "Event": "National Measles Elimination Goal",
+        "Description": "Objective: Set goal to eliminate measles by 2005, aligning with WHO regional goals. Strategies: High vaccination coverage, enhanced surveillance, rapid outbreak response."
     },
     "2001": {
-        "events": "Enhanced Measles Surveillance",
-        "description": "Initiative: Strengthening of the surveillance system for better tracking of measles cases and outbreaks. Features: Laboratory confirmation for suspected cases, mandatory reporting, improved data collection."
+        "Event": "Enhanced Measles Surveillance",
+        "Description": "Initiative: Strengthening of the surveillance system for better tracking of measles cases and outbreaks. Features: Laboratory confirmation for suspected cases, mandatory reporting, improved data collection."
     },
     "2002": {
-        "events": "National Immunization Strategy 2003-2008",
-        "description": "Policy Framework: Planning for a strategy emphasizing high vaccination coverage, timely vaccine administration, and public awareness. Goals: Sustain measles elimination efforts and prevent reintroduction."
+        "Event": "National Immunization Strategy 2003-2008",
+        "Description": "Policy Framework: Planning for a strategy emphasizing high vaccination coverage, timely vaccine administration, and public awareness. Goals: Sustain measles elimination efforts and prevent reintroduction."
     },
     "2003": {
-        "events": "Launch of National Immunization Strategy 2003-2008",
-        "description": "Implementation: Official launch and execution of the strategy planned in 2002. Focus: Continued high coverage, addressing vaccine hesitancy, and robust surveillance."
+        "Event": "Launch of National Immunization Strategy 2003-2008",
+        "Description": "Implementation: Official launch and execution of the strategy planned in 2002. Focus: Continued high coverage, addressing vaccine hesitancy, and robust surveillance."
     },
     "2005": {
-        "events": "Measles Elimination Certification",
-        "description": "Achievement: Australia was declared measles-free, having interrupted endemic measles transmission for over three years."
+        "Event": "Measles Elimination Certification",
+        "Description": "Achievement: Australia was declared measles-free, having interrupted endemic measles transmission for over three years."
     },
     "2009": {
-        "events": "National Immunization Program Schedule Update",
-        "description": "Change: Introduction of the combined measles-mumps-rubella-varicella (MMRV) vaccine for the second dose at 18 months. Objective: Simplify vaccination schedule and increase coverage."
+        "Event": "National Immunization Program Schedule Update",
+        "Description": "Change: Introduction of the combined measles-mumps-rubella-varicella (MMRV) vaccine for the second dose at 18 months. Objective: Simplify vaccination schedule and increase coverage."
     },
     "2013": {
-        "events": "Strengthening Surveillance and Outbreak Response",
-        "description": "Enhancement: Improved outbreak response protocols and better integration of data systems. Impact: Quicker identification and containment of measles outbreaks."
+        "Event": "Strengthening Surveillance and Outbreak Response",
+        "Description": "Enhancement: Improved outbreak response protocols and better integration of data systems. Impact: Quicker identification and containment of measles outbreaks."
     },
     "2016": {
-        "events": "No Jab, No Pay Policy",
-        "description": "Policy: Parents must ensure their children meet vaccination requirements to receive certain government benefits. Effect: Increased vaccination rates and compliance with immunization schedules."
+        "Event": "No Jab, No Pay Policy",
+        "Description": "Policy: Parents must ensure their children meet vaccination requirements to receive certain government benefits. Effect: Increased vaccination rates and compliance with immunization schedules."
     },
     "2018": {
-        "events": "Strengthened Immunization Requirements for School Entry",
-        "description": "Legislation: States and territories implemented laws requiring proof of immunization for school enrollment. Goal: Ensure high vaccination coverage among school-aged children."
+        "Event": "Strengthened Immunization Requirements for School Entry",
+        "Description": "Legislation: States and territories implemented laws requiring proof of immunization for school enrollment. Goal: Ensure high vaccination coverage among school-aged children."
     },
     "2020": {
-        "events": "COVID-19 Pandemic Response",
-        "description": "Adjustment: Efforts to maintain routine immunization schedules despite pandemic-related disruptions. Measures: Public health campaigns emphasizing the importance of continuing vaccinations."
+        "Event": "COVID-19 Pandemic Response",
+        "Description": "Adjustment: Efforts to maintain routine immunization schedules despite pandemic-related disruptions. Measures: Public health campaigns emphasizing the importance of continuing vaccinations."
     },
     "2022": {
-        "events": "Continued Surveillance and Vaccination Efforts",
-        "description": "Focus: Maintaining high vaccination coverage, addressing vaccine misinformation, and ensuring robust surveillance systems. Initiatives: Ongoing public health campaigns and school-based vaccination programs to prevent measles resurgence."
+        "Event": "Continued Surveillance and Vaccination Efforts",
+        "Description": "Focus: Maintaining high vaccination coverage, addressing vaccine misinformation, and ensuring robust surveillance systems. Initiatives: Ongoing public health campaigns and school-based vaccination programs to prevent measles resurgence."
     }
 }
