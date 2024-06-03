@@ -163,8 +163,8 @@ function showLineChart(disease) {
 
     gridX.selectAll("line")
         .style("stroke", "lightgray")
-        .style("stroke-opacity", 0.8)
-        .style("stroke-dasharray", "4,4");
+        .style("stroke-opacity", 0.2);
+    
 
     
 
@@ -270,13 +270,51 @@ function showScatterPlot(disease) {
 
 
     // Update scales for scatter plot
-    xScale.domain([0, 100]); // Immunization rates on x-axis (0 to 100%)
+    var minValue = d3.min(currentData.immunization, d => d.number);
+    xScale.domain([minValue - 2, 100]); // Immunization rates on x-axis (minimum value to 100%)
     yScaleLeft.domain([0, d3.max(currentData.incidence, d => d.number)]); // Incidence rates on y-axis
 
     // Transition for updating axes
     var t = svg.transition().duration(750);
     xAxis.transition(t).call(d3.axisBottom(xScale));
     yAxisLeft.transition(t).call(d3.axisLeft(yScaleLeft));
+
+      // Remove any existing grid lines
+    svg.selectAll(".grid").remove();
+
+    // Add grid lines for scatter plot
+    var gridX = svg.append("g")
+        .attr("class", "grid")
+        .attr("transform", `translate(0,${h - padding})`)
+        .call(d3.axisBottom(xScale)
+            .ticks(10)
+            .tickSize(-h +  2*padding)
+            .tickFormat("")
+        );
+
+    var gridY = svg.append("g")
+        .attr("class", "grid")
+        .attr("transform", `translate(${padding},0)`)
+        .call(d3.axisLeft(yScaleLeft)
+            .ticks(10)
+            .tickSize(-w + 2 * padding)
+            .tickFormat("")
+        );
+
+    gridX.selectAll("line")
+        .style("stroke", "lightgray")
+        .style("stroke-opacity", 0.4);
+   
+
+    gridY.selectAll("line")
+        .style("stroke", "lightgray")
+        .style("stroke-opacity", 0.4);
+
+    // Remove the axis path to diminish the border lines entirely
+    svg.selectAll(".grid path")
+        .style("stroke", "none")
+        .style("opacity", 0);
+
 
 
 
@@ -293,7 +331,7 @@ function showScatterPlot(disease) {
         .attr("cx", d => xScale(d.immunization))
         .attr("cy", d => yScaleLeft(d.incidence))
         .attr("r", 0)
-        .style("fill", "blue")
+        .style("fill", "Purple")
         .transition(t)
         .attr("r", 5);
 
@@ -315,6 +353,8 @@ function showScatterPlot(disease) {
             tooltip.transition().duration(300).style("opacity", 0);
         });
 
+    addScatterPlotText();
+
     // Add button to switch back to line chart
     var buttonContainer = document.getElementById("button-container");
     buttonContainer.innerHTML = ""; // Clear any existing buttons
@@ -328,6 +368,38 @@ function showScatterPlot(disease) {
 
     buttonContainer.appendChild(lineChartButton);
 }
+
+function addScatterPlotText() {
+    // Remove old axis labels before adding new ones with fade-in transition
+    svg.selectAll(".x.label, .y.label").remove();
+
+    // Append x-axis label with fade-in transition
+    svg.append("text")
+        .attr("class", "x label")
+        .attr("text-anchor", "middle")
+        .attr("x", w / 2)
+        .attr("y", h - padding / 12)
+        .style("opacity", 0) // Initial opacity
+        .text("Immunization Rates")
+        .transition() // Transition to fade in
+        .duration(2000)
+        .style("opacity", 1); // Final opacity
+
+    // Append y-axis label for left axis with fade-in transition
+    svg.append("text")
+        .attr("class", "y label")
+        .attr("text-anchor", "middle")
+        .attr("x", -h / 2)
+        .attr("y", padding / 1.5)
+        .attr("dy", "-1em")
+        .attr("transform", "rotate(-90)")
+        .style("opacity", 0) // Initial opacity
+        .text("Disease Incidence Rates")
+        .transition() // Transition to fade in
+        .duration(2000)
+        .style("opacity", 1); // Final opacity
+}
+
 
 
 function addLineChartText(){
