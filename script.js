@@ -61,17 +61,13 @@ function initVisualization() {
 
     xAxis = svg.append("g").attr("transform", `translate(0,${h - padding})`);
     yAxisLeft = svg.append("g").attr("transform", `translate(${padding},0)`);
+
     yAxisRight = svg.append("g").attr("transform", `translate(${w - padding},0)`);
 
-     // Append grid lines
-     gridX = svg.append("g").attr("class", "grid");
+    // Append grid lines
+    //gridX = svg.append("g").attr("class", "grid");
 
-   
-  
-
-    
-
-     showLineChart('DTP'); // Default visualization
+    showLineChart('DTP'); // Default visualization
 
 
 }
@@ -80,8 +76,13 @@ function initVisualization() {
 function showLineChart(disease) {
     var currentData = datasets[disease];
 
+    //gridX = svg.append("g").attr("class", "grid");
     // Remove scatter plot circles
     svg.selectAll(".dot").transition().duration(750).attr("r", 0).remove();
+
+    //append right axis
+
+
 
     // Update scales based on current data
     xScale.domain([d3.min(currentData.immunization.concat(currentData.incidence), d => d.date), d3.max(currentData.immunization.concat(currentData.incidence), d => d.date)]);
@@ -132,9 +133,15 @@ function showLineChart(disease) {
 
     pathRight.exit().remove();
 
-   
- 
-
+    svg.selectAll(".grid").remove(); // Remove existing grid
+    gridX = svg.append("g")
+        .attr("class", "grid")
+        .attr("transform", `translate(0,${h - padding})`)
+        .call(d3.axisBottom(xScale)
+            .ticks(30)
+            .tickSize(-h + 2 * padding)
+            .tickFormat("")
+        );
 
     gridX.transition(t).call(d3.axisBottom(xScale).ticks(30)
         .tickSize(-h + 2 * padding)
@@ -145,6 +152,9 @@ function showLineChart(disease) {
         .style("stroke", "lightgray")
         .style("stroke-opacity", 0.8)
         .style("stroke-dasharray", "4,4");
+
+    
+
 
     addText();
     updateTooltipsAndCircles(currentData, t);
@@ -242,7 +252,7 @@ function showScatterPlot(disease) {
 
     // Hide line chart elements including lines, y-axis labels, and grid lines
     svg.selectAll(".line-circle").transition().duration(750).attr("r", 0).remove();
-    svg.selectAll(".line").transition().duration(750).attr("opacity", 0).remove();
+    svg.selectAll(".line,.grid").transition().duration(750).attr("opacity", 0).remove();
     
 
 
