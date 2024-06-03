@@ -408,38 +408,7 @@ function showScatterPlot(disease) {
 
 
 
-/*
-function addTrendLine(data) {
-    // Prepare the data for regression
-    var xData = data.immunization.map(d => d.number);
-    var yData = data.incidence.map(d => d.number);
 
-    // Calculate the linear regression
-    var regression = linearRegression(xData, yData);
-
-    // Generate points for the trend line
-    var trendLine = [
-        { x: d3.min(xData), y: regression.slope * d3.min(xData) + regression.intercept },
-        { x: d3.max(xData), y: regression.slope * d3.max(xData) + regression.intercept }
-    ];
-
-    // Add the trend line to the scatter plot with a fade-in transition
-    svg.append("line")
-    .attr("class", "trend-line")
-    .attr("x1", xScale(trendLine[0].x))
-    .attr("y1", yScaleLeft(trendLine[0].y))
-    .attr("x2", xScale(trendLine[1].x))
-    .attr("y2", yScaleLeft(trendLine[1].y))
-    .style("stroke", "green")
-    .style("stroke-width", 2)
-    .style("opacity", 0)
-    .transition()
-    .duration(750)
-    .style("opacity", 1);
-
-    
-}
-*/
 
 
 function linearRegression(x, y) {
