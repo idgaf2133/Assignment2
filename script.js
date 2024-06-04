@@ -172,6 +172,7 @@ function showLineChart(disease) {
 
     addLineChartText();
     updateTooltipsAndCircles(currentData, t);
+    addLegend();
 
     // Dynamically create the button to visualize scatter plot
     var buttonContainer = document.getElementById("button-container");
@@ -261,12 +262,52 @@ function updateTooltipsAndCircles(currentData, t) {
     });
 }
 
+function addLegend() {
+    // Remove any existing legend
+    svg.selectAll(".legend").remove();
+
+    // Create a legend group
+    var legend = svg.append("g")
+        .attr("class", "legend")
+        .attr("transform", `translate(${w - 650}, 20)`); // Position the legend at the top-right corner
+
+    // Define legend data
+    var legendData = [
+        { label: "Immunization", color: "blue" },
+        { label: "Incidence", color: "red" }
+    ];
+
+    // Create legend items
+    var legendItem = legend.selectAll(".legend-item")
+        .data(legendData)
+        .enter().append("g")
+        .attr("class", "legend-item")
+        .attr("transform", (d, i) => `translate(${i * 130}, 0)`); // Space items horizontally
+
+    // Append colored rectangles
+    legendItem.append("rect")
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("width", 18)
+        .attr("height", 18)
+        .style("fill", d => d.color);
+
+    // Append text labels
+    legendItem.append("text")
+        .attr("x", 24)
+        .attr("y", 9)
+        .attr("dy", "0.35em")
+        .text(d => d.label);
+
+
+}
+
 function showScatterPlot(disease) {
     var currentData = datasets[disease];
 
     // Hide line chart elements including lines, y-axis labels, and grid lines
     svg.selectAll(".line-circle").transition().duration(750).attr("r", 0).remove();
-    svg.selectAll(".line,.grid,.y-axis-right").transition().duration(750).attr("opacity", 0).remove();
+    svg.selectAll(".line,.grid,.y-axis-right,.legend").transition().duration(750).attr("opacity", 0).remove();
 
     
 
