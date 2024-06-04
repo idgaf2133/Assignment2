@@ -99,6 +99,21 @@ function showLineChart(disease) {
     updateTooltipsAndCircles(currentData, t);
     addLegend();
 
+     // Add heading with the corresponding disease
+     svg.selectAll(".chart-title").remove(); // Remove previous heading
+
+     svg.append("text")
+         .attr("class", "chart-title")
+         .attr("x", w / 2)
+         .attr("y", (padding / 2) -4 )
+         .attr("text-anchor", "middle")
+         .style("font-size", "15px")
+         .style("fill", "black")
+         .style("opacity", 0)
+         .text("Immunization and Incidence rates vs time for " + disease)
+         .transition(t)
+         .style("opacity", 1);
+
     // Dynamically create the button to visualize scatter plot
     var buttonContainer = document.getElementById("button-container");
     buttonContainer.innerHTML = ""; // Clear any existing buttons
@@ -194,7 +209,7 @@ function addLegend() {
     // Create a legend group
     var legend = svg.append("g")
         .attr("class", "legend")
-        .attr("transform", `translate(${w - 650}, 20)`); // Position the legend at the top-right corner
+        .attr("transform", `translate(${w - 680}, 20)`); // Position the legend at the top-right corner
 
     // Define legend data
     var legendData = [
@@ -207,23 +222,23 @@ function addLegend() {
         .data(legendData)
         .enter().append("g")
         .attr("class", "legend-item")
-        .attr("transform", (d, i) => `translate(${i * 130}, 0)`); // Space items horizontally
+        .attr("transform", (d, i) => `translate(${i * 90}, 0)`); // Space items horizontally
 
-    // Append colored rectangles
+     // Append colored rectangles
     legendItem.append("rect")
         .attr("x", 0)
-        .attr("y", 0)
-        .attr("width", 18)
-        .attr("height", 18)
+        .attr("y", 2)
+        .attr("width", 10)  // Reduced size
+        .attr("height", 10) // Reduced size
         .style("fill", d => d.color);
 
     // Append text labels
     legendItem.append("text")
-        .attr("x", 24)
+        .attr("x", 15)      // Adjust spacing between rectangle and text
         .attr("y", 9)
-        .attr("dy", "0.35em")
+        .attr("dy", "0.2em")
+        .style("font-size", "12px")  // Reduced font size
         .text(d => d.label);
-
 
 }
 
@@ -239,6 +254,7 @@ function addLineChartText(){
         .attr("y", h - padding / 12)
         .style("opacity", 0) // Initial opacity
         .text("Time Period (last 30 years)")
+        .style("font-size", "12px")  // Reduced font size
         .transition() // Transition to fade in
         .duration(2000)
         .style("opacity", 1); // Final opacity
@@ -248,11 +264,12 @@ function addLineChartText(){
         .attr("class", "y label")
         .attr("text-anchor", "middle")
         .attr("x", -h / 2)
-        .attr("y", padding-10 )
+        .attr("y", padding-15 )
         .attr("dy", "-1em")
         .attr("transform", "rotate(-90)")
         .style("opacity", 0) // Initial opacity
         .text("Disease Prevalence Rates")
+        .style("font-size", "12px")  // Reduced font size
         .transition() // Transition to fade in
         .duration(2000)
         .style("opacity", 1); // Final opacity
@@ -262,11 +279,12 @@ function addLineChartText(){
         .attr("class", "y label")
         .attr("text-anchor", "middle")
         .attr("x", -h / 2)
-        .attr("y", w - padding /50)
+        .attr("y", w - padding /60)
         .attr("dy", "-0.2em")
         .attr("transform", "rotate(-90)")
         .style("opacity", 0) // Initial opacity
         .text("Immunization Rates")
+        .style("font-size", "12px")  // Reduced font size
         .transition() // Transition to fade in
         .duration(2000)
         .style("opacity", 1); // Final opacit

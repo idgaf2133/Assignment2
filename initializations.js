@@ -73,14 +73,6 @@ function initVisualization() {
 }
 
 
-
-
-
-
-
-
-
-
 function rowConverter(d) {
     return {
         date: new Date(+d.YEA, 0),

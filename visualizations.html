@@ -20,21 +20,19 @@
     <script src="initializations.js"></script>
 </head>
 <body onload="fadeIn()">
-   <!-- Navigation Bar -->
-   <nav id="main-nav">
-    <ul class="navbar">
-        <li><button class="nav-button" onclick="fadeOutAndRedirect('main.html')">Home</button></li>
-        <li class="dropdown">
-            <button class="dropbtn">Diseases</button>
-            <div class="dropdown-content">
-                <a href="#" onclick="showLineChart('DTP')">DTP</a>
-                <a href="#" onclick="showLineChart('Measles')">Measles</a>
-                <a href="#" onclick="showLineChart('Hepatitis')">Hepatitis</a>
-            </div>
-        </li>
-    </ul>
-</nav>
-    <!-- Visualization Controls -->
+    <!-- Navigation Bar -->
+    <nav id="main-nav">
+        <ul class="navbar">
+            <li><button class="nav-button" onclick="fadeOutAndRedirect('main.html')">Home</button></li>
+        </ul>
+    </nav>
+
+    <!-- Radio Button Group -->
+    <div id="radio-group">
+        <label><input type="radio" name="disease" value="DTP" onclick="showLineChart('DTP')"> DTP</label>
+        <label><input type="radio" name="disease" value="Measles" onclick="showLineChart('Measles')"> Measles</label>
+        <label><input type="radio" name="disease" value="Hepatitis" onclick="showLineChart('Hepatitis')"> Hepatitis</label>
+    </div>
  
 
    <!-- Visualization Area -->
