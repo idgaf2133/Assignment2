@@ -1,13 +1,9 @@
-
 function showScatterPlot(disease) {
     var currentData = datasets[disease];
 
     // Hide line chart elements including lines, y-axis labels, and grid lines
     svg.selectAll(".line-circle").transition().duration(750).attr("r", 0).remove();
     svg.selectAll(".line,.grid,.y-axis-right,.legend").transition().duration(750).attr("opacity", 0).remove();
-
-    
-
 
     // Update scales for scatter plot
     var minValue = d3.min(currentData.immunization, d => d.number);
@@ -19,7 +15,7 @@ function showScatterPlot(disease) {
     xAxis.transition(t).call(d3.axisBottom(xScale));
     yAxisLeft.transition(t).call(d3.axisLeft(yScaleLeft));
 
-      // Remove any existing grid lines
+    // Remove any existing grid lines
     svg.selectAll(".grid").remove();
 
     // Add grid lines for scatter plot
@@ -28,7 +24,7 @@ function showScatterPlot(disease) {
         .attr("transform", `translate(0,${h - padding})`)
         .call(d3.axisBottom(xScale)
             .ticks(10)
-            .tickSize(-h +  2*padding)
+            .tickSize(-h + 2 * padding)
             .tickFormat("")
         );
 
@@ -44,7 +40,6 @@ function showScatterPlot(disease) {
     gridX.selectAll("line")
         .style("stroke", "lightgray")
         .style("stroke-opacity", 0.4);
-   
 
     gridY.selectAll("line")
         .style("stroke", "lightgray")
@@ -54,9 +49,6 @@ function showScatterPlot(disease) {
     svg.selectAll(".grid path")
         .style("stroke", "none")
         .style("opacity", 0);
-
-
-
 
     // Append circles for scatter plot with transitions
     var circles = svg.selectAll(".dot")
@@ -71,7 +63,7 @@ function showScatterPlot(disease) {
         .attr("cx", d => xScale(d.immunization))
         .attr("cy", d => yScaleLeft(d.incidence))
         .attr("r", 0)
-        .style("fill", "Purple")
+        .style("fill", "purple")
         .transition(t)
         .attr("r", 5);
 
@@ -95,20 +87,20 @@ function showScatterPlot(disease) {
 
     addScatterPlotText();
 
-     // Prepare the data for regression
-     var xData = currentData.immunization.map(d => d.number);
-     var yData = currentData.incidence.map(d => d.number);
- 
-     // Calculate the linear regression
-     var regression = linearRegression(xData, yData);
- 
-     // Generate points for the trend line
-     var trendLine = [
-         { x: d3.min(xData), y: regression.slope * d3.min(xData) + regression.intercept },
-         { x: d3.max(xData), y: regression.slope * d3.max(xData) + regression.intercept }
-     ];
- 
-     // Add the trend line to the scatter plot with a fade-in transition
+    // Prepare the data for regression
+    var xData = currentData.immunization.map(d => d.number);
+    var yData = currentData.incidence.map(d => d.number);
+
+    // Calculate the linear regression
+    var regression = linearRegression(xData, yData);
+
+    // Generate points for the trend line
+    var trendLine = [
+        { x: d3.min(xData), y: regression.slope * d3.min(xData) + regression.intercept },
+        { x: d3.max(xData), y: regression.slope * d3.max(xData) + regression.intercept }
+    ];
+
+    // Add the trend line to the scatter plot with a fade-in transition
     var trend = svg.selectAll(".trend-line")
         .data([trendLine]);
 
@@ -130,6 +122,7 @@ function showScatterPlot(disease) {
         .transition()
         .style("opacity", 0)
         .remove();
+
     // Add button to switch back to line chart
     var buttonContainer = document.getElementById("button-container");
     buttonContainer.innerHTML = ""; // Clear any existing buttons
@@ -142,52 +135,56 @@ function showScatterPlot(disease) {
     };
 
     buttonContainer.appendChild(lineChartButton);
-}
 
+    // Add zoom and pan functionality
+    var zoom = d3.zoom()
+        .scaleExtent([1, 20])  // Adjust this to control zoom limits
+        .extent([[1, 5], [w, h]])
+        .on("zoom", zoomed);
 
+    // Add an invisible rect on top of the chart area to capture zoom events
+    svg.append("rect")
+        .attr("width", w)
+        .attr("height", h)
+        .style("fill", "none")
+        .style("pointer-events", "all")
+        .call(zoom);
 
+    function zoomed(event) {
+        // Rescale axes
+        var new_xScale = event.transform.rescaleX(xScale);
+        var new_yScaleLeft = event.transform.rescaleY(yScaleLeft);
 
+        // Update axes
+        xAxis.call(d3.axisBottom(new_xScale));
+        yAxisLeft.call(d3.axisLeft(new_yScaleLeft));
 
+        // Update circle positions
+        svg.selectAll(".dot")
+            .attr("cx", d => new_xScale(d.immunization))
+            .attr("cy", d => new_yScaleLeft(d.incidence));
 
-function linearRegression(x, y) {
-    var n = x.length;
-    var sumX = d3.sum(x);
-    var sumY = d3.sum(y);
-    var sumXY = d3.sum(x.map((d, i) => d * y[i]));
-    var sumXX = d3.sum(x.map(d => d * d));
+        // Update trend line positions
+        svg.selectAll(".trend-line")
+            .attr("x1", new_xScale(trendLine[0].x))
+            .attr("y1", new_yScaleLeft(trendLine[0].y))
+            .attr("x2", new_xScale(trendLine[1].x))
+            .attr("y2", new_yScaleLeft(trendLine[1].y));
+    }
 
-    var slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
-    var intercept = (sumY - slope * sumX) / n;
+    // Double-click event to zoom in
+    svg.on("dblclick.zoom", function(event) {
+        var [x, y] = d3.pointer(event);
+        var zoomLevel = 5; // Adjust this value to control zoom level
+        var newTransform = d3.zoomIdentity
+            .translate(w / 2 - zoomLevel * x, h / 2 - zoomLevel * y)
+            .scale(zoomLevel);
 
-    return { slope: slope, intercept: intercept };
-}
-function addScatterPlotText() {
-    // Remove old axis labels before adding new ones with fade-in transition
-    svg.selectAll(".x.label, .y.label").remove();
+        svg.transition().duration(750).call(zoom.transform, newTransform);
+    });
 
-    // Append x-axis label with fade-in transition
-    svg.append("text")
-        .attr("class", "x label")
-        .attr("text-anchor", "middle")
-        .attr("x", w / 2)
-        .attr("y", h - padding / 12)
-        .style("opacity", 0) // Initial opacity
-        .text("Immunization Rates")
-        .transition() // Transition to fade in
-        .duration(2000)
-        .style("opacity", 1); // Final opacity
-
-    // Append y-axis label for left axis with fade-in transition
-    svg.append("text")
-        .attr("class", "y label")
-        .attr("text-anchor", "middle")
-        .attr("x", -h / 2)
-        .attr("y", padding-12 )
-        .attr("dy", "-1em")
-        .attr("transform", "rotate(-90)")
-        .style("opacity", 0) // Initial opacity
-        .text("Disease Incidence Rates")
-        .transition() // Transition to fade in
-        .duration(2000)
-        .style("opacity", 1); // Final opacity
+    // Single-click event to reset zoom
+    svg.on("click", function() {
+        svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity);
+    });
 }
