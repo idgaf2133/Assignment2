@@ -110,9 +110,25 @@ function showLineChart(disease) {
          .style("font-size", "15px")
          .style("fill", "black")
          .style("opacity", 0)
-         .text("Immunization and Incidence rates vs time for " + disease)
+         .text(disease +" Immunization and Incidence Rates Over Time ")
          .transition(t)
          .style("opacity", 1);
+    
+    // Update the text box with the paragraph
+    var textContainer = document.getElementById("text-container");
+    textContainer.innerHTML = ""; // Clear any existing content
+
+    var paragraph = document.createElement("p");
+    paragraph.style.opacity = 0; // Start with opacity 0 for transition
+    paragraph.innerHTML = getParagraphContent(disease); // Get paragraph content based on disease
+
+    textContainer.appendChild(paragraph);
+
+    // Transition the text opacity to 1
+    setTimeout(function() {
+        paragraph.style.opacity = 1;
+    }, 100);
+
 
     // Dynamically create the button to visualize scatter plot
     var buttonContainer = document.getElementById("button-container");
@@ -253,7 +269,7 @@ function addLineChartText(){
         .attr("x", w / 2)
         .attr("y", h - padding / 12)
         .style("opacity", 0) // Initial opacity
-        .text("Time Period (last 30 years)")
+        .text("Year")
         .style("font-size", "12px")  // Reduced font size
         .transition() // Transition to fade in
         .duration(2000)
@@ -268,7 +284,7 @@ function addLineChartText(){
         .attr("dy", "-1em")
         .attr("transform", "rotate(-90)")
         .style("opacity", 0) // Initial opacity
-        .text("Disease Prevalence Rates")
+        .text("Incidence Rate (per 100,000)")
         .style("font-size", "12px")  // Reduced font size
         .transition() // Transition to fade in
         .duration(2000)
@@ -283,10 +299,19 @@ function addLineChartText(){
         .attr("dy", "-0.2em")
         .attr("transform", "rotate(-90)")
         .style("opacity", 0) // Initial opacity
-        .text("Immunization Rates")
+        .text("Immunization Rate (%)")
         .style("font-size", "12px")  // Reduced font size
         .transition() // Transition to fade in
         .duration(2000)
         .style("opacity", 1); // Final opacit
+}
+
+function getParagraphContent(disease) {
+    var paragraphs = {
+        'DTP': 'The dual-axis line chart and scatter plot for diphtheria illustrate an inverse relationship between immunization and incidence rates over time. Significant increases in immunization rates, driven by initiatives such as the National Immunization Program updates and the "No Jab, No Pay" policy, have led to a decline in diphtheria incidence rates. This trend highlights the importance of maintaining high vaccination coverage to prevent disease resurgence.',
+        'Measles': 'The dual-axis line chart and scatter plot for measles show a clear inverse relationship between immunization and incidence rates. Major initiatives, like the National Measles Control Campaign and the introduction of the two-dose schedule, have significantly increased immunization rates, resulting in a notable decline in measles cases. Despite occasional outbreaks, the overall trend underscores the effectiveness of high vaccination coverage in preventing measles.',
+        'Hepatitis': 'The dual-axis line chart and scatter plot for hepatitis B reveal a strong inverse relationship between immunization and incidence rates. Since the inclusion of the hepatitis B vaccine in the National Immunization Program, supported by policies like the "No Jab, No Pay" policy, immunization rates have remained high, leading to a steady decline in hepatitis B cases. This demonstrates the critical role of consistent immunization efforts in controlling hepatitis B.'
+    };
+    return paragraphs[disease];
 }
 

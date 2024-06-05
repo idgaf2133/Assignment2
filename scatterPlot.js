@@ -142,7 +142,7 @@ function showScatterPlot(disease) {
          .style("font-size", "15px")
          .style("fill", "black")
          .style("opacity", 0)
-         .text("Immunization vs Incidence rates for " + disease)
+         .text(disease + " Immunization vs Incidence rates with trend line")
          .transition(t)
          .style("opacity", 1);
     // Add button to switch back to line chart
@@ -187,7 +187,7 @@ function addScatterPlotText() {
         .attr("x", w / 2)
         .attr("y", h - padding / 12)
         .style("opacity", 0) // Initial opacity
-        .text("Immunization Rates")
+        .text("Immunization Rate (%)")
         .style("font-size", "12px")  // Reduced font size
         .transition() // Transition to fade in
         .duration(2000)
@@ -202,7 +202,7 @@ function addScatterPlotText() {
         .attr("dy", "-1em")
         .attr("transform", "rotate(-90)")
         .style("opacity", 0) // Initial opacity
-        .text("Disease Incidence Rates")
+        .text("Incidence Rate (per 100,000)")
         .style("font-size", "12px")  // Reduced font size
         .transition() // Transition to fade in
         .duration(2000)

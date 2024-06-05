@@ -29,17 +29,20 @@
 
     <!-- Radio Button Group -->
     <div id="radio-group">
-        <label><input type="radio" name="disease" value="DTP" onclick="showLineChart('DTP')"> DTP</label>
+        <label><input type="radio" name="disease" value="DTP" onclick="showLineChart('DTP')"checked> DTP</label>
         <label><input type="radio" name="disease" value="Measles" onclick="showLineChart('Measles')"> Measles</label>
         <label><input type="radio" name="disease" value="Hepatitis" onclick="showLineChart('Hepatitis')"> Hepatitis</label>
     </div>
  
 
-   <!-- Visualization Area -->
+ 
+    <!-- Chart and Side Container -->
     <div id="chart-container">
         <div id="chart"></div>
-        <!-- Container for dynamic buttons -->
-        <div id="button-container" class="center"></div>
+        <div id="side-container">
+            <div id="button-container" class="center"></div>
+            <div id="text-container" class="center"></div>
+        </div>
     </div>
 
     
