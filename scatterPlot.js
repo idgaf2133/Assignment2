@@ -130,6 +130,21 @@ function showScatterPlot(disease) {
         .transition()
         .style("opacity", 0)
         .remove();
+        
+     // Add heading with the corresponding disease
+     svg.selectAll(".chart-title").remove(); // Remove previous heading
+
+     svg.append("text")
+         .attr("class", "chart-title")
+         .attr("x", w / 2)
+         .attr("y", (padding / 2) -4 )
+         .attr("text-anchor", "middle")
+         .style("font-size", "15px")
+         .style("fill", "black")
+         .style("opacity", 0)
+         .text("Immunization vs Incidence rates for " + disease)
+         .transition(t)
+         .style("opacity", 1);
     // Add button to switch back to line chart
     var buttonContainer = document.getElementById("button-container");
     buttonContainer.innerHTML = ""; // Clear any existing buttons
@@ -173,6 +188,7 @@ function addScatterPlotText() {
         .attr("y", h - padding / 12)
         .style("opacity", 0) // Initial opacity
         .text("Immunization Rates")
+        .style("font-size", "12px")  // Reduced font size
         .transition() // Transition to fade in
         .duration(2000)
         .style("opacity", 1); // Final opacity
@@ -182,11 +198,12 @@ function addScatterPlotText() {
         .attr("class", "y label")
         .attr("text-anchor", "middle")
         .attr("x", -h / 2)
-        .attr("y", padding-12 )
+        .attr("y", padding-16)
         .attr("dy", "-1em")
         .attr("transform", "rotate(-90)")
         .style("opacity", 0) // Initial opacity
         .text("Disease Incidence Rates")
+        .style("font-size", "12px")  // Reduced font size
         .transition() // Transition to fade in
         .duration(2000)
         .style("opacity", 1); // Final opacity
