@@ -1,9 +1,13 @@
+
 function showScatterPlot(disease) {
     var currentData = datasets[disease];
 
     // Hide line chart elements including lines, y-axis labels, and grid lines
     svg.selectAll(".line-circle").transition().duration(750).attr("r", 0).remove();
     svg.selectAll(".line,.grid,.y-axis-right,.legend").transition().duration(750).attr("opacity", 0).remove();
+
+    
+
 
     // Update scales for scatter plot
     var minValue = d3.min(currentData.immunization, d => d.number);
@@ -15,7 +19,7 @@ function showScatterPlot(disease) {
     xAxis.transition(t).call(d3.axisBottom(xScale));
     yAxisLeft.transition(t).call(d3.axisLeft(yScaleLeft));
 
-    // Remove any existing grid lines
+      // Remove any existing grid lines
     svg.selectAll(".grid").remove();
 
     // Add grid lines for scatter plot
@@ -24,7 +28,7 @@ function showScatterPlot(disease) {
         .attr("transform", `translate(0,${h - padding})`)
         .call(d3.axisBottom(xScale)
             .ticks(10)
-            .tickSize(-h + 2 * padding)
+            .tickSize(-h +  2*padding)
             .tickFormat("")
         );
 
@@ -40,6 +44,7 @@ function showScatterPlot(disease) {
     gridX.selectAll("line")
         .style("stroke", "lightgray")
         .style("stroke-opacity", 0.4);
+   
 
     gridY.selectAll("line")
         .style("stroke", "lightgray")
@@ -49,6 +54,9 @@ function showScatterPlot(disease) {
     svg.selectAll(".grid path")
         .style("stroke", "none")
         .style("opacity", 0);
+
+
+
 
     // Append circles for scatter plot with transitions
     var circles = svg.selectAll(".dot")
@@ -63,7 +71,7 @@ function showScatterPlot(disease) {
         .attr("cx", d => xScale(d.immunization))
         .attr("cy", d => yScaleLeft(d.incidence))
         .attr("r", 0)
-        .style("fill", "purple")
+        .style("fill", "Purple")
         .transition(t)
         .attr("r", 5);
 
@@ -87,20 +95,20 @@ function showScatterPlot(disease) {
 
     addScatterPlotText();
 
-    // Prepare the data for regression
-    var xData = currentData.immunization.map(d => d.number);
-    var yData = currentData.incidence.map(d => d.number);
-
-    // Calculate the linear regression
-    var regression = linearRegression(xData, yData);
-
-    // Generate points for the trend line
-    var trendLine = [
-        { x: d3.min(xData), y: regression.slope * d3.min(xData) + regression.intercept },
-        { x: d3.max(xData), y: regression.slope * d3.max(xData) + regression.intercept }
-    ];
-
-    // Add the trend line to the scatter plot with a fade-in transition
+     // Prepare the data for regression
+     var xData = currentData.immunization.map(d => d.number);
+     var yData = currentData.incidence.map(d => d.number);
+ 
+     // Calculate the linear regression
+     var regression = linearRegression(xData, yData);
+ 
+     // Generate points for the trend line
+     var trendLine = [
+         { x: d3.min(xData), y: regression.slope * d3.min(xData) + regression.intercept },
+         { x: d3.max(xData), y: regression.slope * d3.max(xData) + regression.intercept }
+     ];
+ 
+     // Add the trend line to the scatter plot with a fade-in transition
     var trend = svg.selectAll(".trend-line")
         .data([trendLine]);
 
@@ -122,6 +130,21 @@ function showScatterPlot(disease) {
         .transition()
         .style("opacity", 0)
         .remove();
+        
+     // Add heading with the corresponding disease
+     svg.selectAll(".chart-title").remove(); // Remove previous heading
+
+     svg.append("text")
+         .attr("class", "chart-title")
+         .attr("x", w / 2)
+         .attr("y", (padding / 2) -4 )
+         .attr("text-anchor", "middle")
+         .style("font-size", "15px")
+         .style("fill", "black")
+         .style("opacity", 0)
+         .text("Immunization vs Incidence rates for " + disease)
+         .transition(t)
+         .style("opacity", 1);
     // Add button to switch back to line chart
     var buttonContainer = document.getElementById("button-container");
     buttonContainer.innerHTML = ""; // Clear any existing buttons
@@ -165,6 +188,7 @@ function addScatterPlotText() {
         .attr("y", h - padding / 12)
         .style("opacity", 0) // Initial opacity
         .text("Immunization Rates")
+        .style("font-size", "12px")  // Reduced font size
         .transition() // Transition to fade in
         .duration(2000)
         .style("opacity", 1); // Final opacity
@@ -174,11 +198,12 @@ function addScatterPlotText() {
         .attr("class", "y label")
         .attr("text-anchor", "middle")
         .attr("x", -h / 2)
-        .attr("y", padding-12 )
+        .attr("y", padding-16)
         .attr("dy", "-1em")
         .attr("transform", "rotate(-90)")
         .style("opacity", 0) // Initial opacity
         .text("Disease Incidence Rates")
+        .style("font-size", "12px")  // Reduced font size
         .transition() // Transition to fade in
         .duration(2000)
         .style("opacity", 1); // Final opacity

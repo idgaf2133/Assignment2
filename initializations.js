@@ -1,6 +1,8 @@
+
 // Global variables to store data and visualization elements
 var datasets = {};
-var svg, xScale, yScaleLeft, yScaleRight, xAxis, yAxisLeft, yAxisRight, w, h, padding;
+var svg, xScale, yScaleLeft, yScaleRight, xAxis, yAxisLeft, yAxisRight,w,h,padding;
+
 
 // Preload all datasets when the document is ready
 document.addEventListener('DOMContentLoaded', function() {
@@ -42,23 +44,39 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initVisualization() {
-    w = 700, h = 350, padding = 40;
+     w = 700, h = 350, padding = 40;
+ 
 
     svg = d3.select("#chart").append("svg").attr("width", w).attr("height", h);
 
-    xScale = d3.scaleLinear().range([padding, w - padding]);
+
+    
+   
+    xScale = d3.scaleTime().range([padding, w - padding]);
     yScaleLeft = d3.scaleLinear().range([h - padding, padding]);
     yScaleRight = d3.scaleLinear().range([h - padding, padding]);
+    
+
+
 
     xAxis = svg.append("g").attr("transform", `translate(0,${h - padding})`);
     yAxisLeft = svg.append("g").attr("transform", `translate(${padding},0)`);
 
+    //yAxisRight = svg.append("g").attr("transform", `translate(${w - padding},0)`);
+
+    // Append grid lines
+    //gridX = svg.append("g").attr("class", "grid");
+
     showLineChart('DTP'); // Default visualization
+
+
 }
+
 
 function rowConverter(d) {
     return {
         date: new Date(+d.YEA, 0),
         number: +d.Value
     };
-}
+};
+
