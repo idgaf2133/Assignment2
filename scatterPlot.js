@@ -72,6 +72,15 @@ function showScatterPlot(disease) {
         .attr("cy", d => yScaleLeft(d.incidence))
         .attr("r", 0)
         .style("fill", "Purple")
+        .on("click", function(event, d) {
+            d3.select(this)
+                .transition()
+                .duration(750)
+                .attr("r", 20)
+                .transition()
+                .duration(750)
+                .attr("r", 5);
+        })
         .transition(t)
         .attr("r", 5);
 

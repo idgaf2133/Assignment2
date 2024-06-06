@@ -49,7 +49,6 @@ function initVisualization() {
 
     svg = d3.select("#chart").append("svg").attr("width", w).attr("height", h);
 
-
     
    
     xScale = d3.scaleTime().range([padding, w - padding]);
