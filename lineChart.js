@@ -105,7 +105,7 @@ function showLineChart(disease) {
      svg.append("text")
          .attr("class", "chart-title")
          .attr("x", w / 2)
-         .attr("y", (padding / 2) -4 )
+         .attr("y", (padding / 2) -6)
          .attr("text-anchor", "middle")
          .style("font-size", "15px")
          .style("fill", "black")
