@@ -4,7 +4,6 @@
     width: auto;
     height: auto;
     padding: 10px;
-
     font: 12px sans-serif;
     border: 0px;
     border-radius: 8px;
@@ -22,16 +21,18 @@ body {
 h1 {
     text-align: center;
     margin-top: 20px;
+    text-decoration: underline;
 }
 
 h2 {
     text-align: center;
     margin-top: 20px;
 }
+
 .intro-text {
     text-align: center;
     width: 80%;
-    margin: 20px auto;
+    margin: 5px auto;
     font-size: 16px;
     line-height: 1.5;
     color: #666666;
@@ -41,30 +42,100 @@ h2 {
     text-align: center;
     margin: 20px 0;
 }
+
 main {
     flex: 1;
 }
 
-#image-container {
-    display: flex;
-    justify-content: center; /* Centers the images horizontally */
-    gap: 20px; /* Adds space between the images */
+.image-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+    background-color: #fff;
 }
-#image-container img {
-    width: 45%; /* Sets the width of the images */
-    height: auto; /* Sets the height of the images */
+
+.top-section, .bottom-section {
+    display: flex;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+.top-section {
+    flex-direction: row;
+    animation-name: fadeInLeft;
+}
+
+.bottom-section {
+    flex-direction: row;
+    animation-name: fadeInRight;
+}
+
+.top-section img {
+    max-width: 300px;
+    margin-right: 20px;
+}
+
+.bottom-section img {
+    max-width: 300px;
+    margin-left: 20px;
+}
+
+.top-section .text-content, .bottom-section .text-content {
+    max-width: 800px;
+    margin: auto 20px;
+    font-size: smaller;
+}
+
+.bottom-section .text-content {
+    text-align: left;
+}
+
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 footer {
-    background-color: #f1f1f1;
+    background-color: #333;
+    color: #fff;
     padding: 15px;
     text-align: center;
     position: relative;
     bottom: 0;
     width: 100%;
-    display: flex;  
+    display: flex;
     justify-content: space-around;
-    box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 -2px 5px rgb(241, 240, 240);
     margin-top: 80px; /* Increased margin to create space between footer and section above */
     font-size: 20px; /* Smaller font size */
 }
@@ -80,7 +151,7 @@ footer {
 
 .footer-section p {
     margin: 2px 0;
-    font-size: 10px; /* Smaller font size for contents */
+    font-size: 12px; /* Smaller font size for contents */
 }
 
 .unit-info p {
@@ -115,12 +186,13 @@ footer {
 #text-container {
     width: 80%;
     align-self: center;
-   /* height: 300px; /* Adjust as needed */
+    /* height: 300px; /* Adjust as needed */
     padding: 10px 10px 20px 20px; /* Reduced top padding */
     background-color: white;
     transition: opacity 0.5s ease;
     /*border: 1px solid #000000;*/
 }
+
 #text-container p {
     font-size: 12px; /* Adjust the font size as needed */
 }
@@ -195,7 +267,6 @@ footer {
 
 #radio-group input {
     margin-right: 5px;
-    
 }
 
 #chart {
