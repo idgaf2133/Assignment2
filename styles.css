@@ -187,7 +187,7 @@ footer {
     width: 80%;
     align-self: center;
     /* height: 300px; /* Adjust as needed */
-    padding: 10px 10px 20px 20px; /* Reduced top padding */
+    padding: 0px 10px 20px 20px; /* Reduced top padding */
     background-color: white;
     transition: opacity 0.5s ease;
     /*border: 1px solid #000000;*/
