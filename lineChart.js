@@ -223,6 +223,10 @@ function updateTooltipsAndCircles(currentData, t, startDate, endDate) {
                 .on("end", function() { // Tooltip behavior setup after transition ends
                     d3.select(this)
                         .on("mouseover", function(event) {
+                            d3.select(this)
+                                .transition()
+                                .duration(300)
+                                .attr("r", 10); // Increase radius on hover
                             tooltip.transition()
                                 .duration(300)
                                 .style("opacity", .9)
@@ -231,7 +235,11 @@ function updateTooltipsAndCircles(currentData, t, startDate, endDate) {
                                 .style("left", (event.pageX) + "px")
                                 .style("top", (event.pageY - 28) + "px");
                         })
-                        .on("mouseout", function(d) {
+                        .on("mouseout", function(event, d) {
+                            d3.select(this)
+                                .transition()
+                                .duration(300)
+                                .attr("r", 5); // Restore radius on mouseout
                             tooltip.transition()
                                 .duration(300)
                                 .style("opacity", 0);
@@ -255,6 +263,10 @@ function updateTooltipsAndCircles(currentData, t, startDate, endDate) {
                 .on("end", function() { // Tooltip behavior setup after transition ends
                     d3.select(this)
                         .on("mouseover", function(event) {
+                            d3.select(this)
+                                .transition()
+                                .duration(300)
+                                .attr("r", 10); // Increase radius on hover
                             tooltip.transition()
                                 .duration(300)
                                 .style("opacity", .9)
@@ -263,7 +275,11 @@ function updateTooltipsAndCircles(currentData, t, startDate, endDate) {
                                 .style("left", (event.pageX) + "px")
                                 .style("top", (event.pageY - 28) + "px");
                         })
-                        .on("mouseout", function(d) {
+                        .on("mouseout", function(event, d) {
+                            d3.select(this)
+                                .transition()
+                                .duration(300)
+                                .attr("r", 5); // Restore radius on mouseout
                             tooltip.transition()
                                 .duration(300)
                                 .style("opacity", 0);
