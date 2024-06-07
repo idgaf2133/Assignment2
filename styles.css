@@ -1,3 +1,4 @@
+/* Tooltip styles */
 .tooltip {
     position: absolute;
     text-align: center;
@@ -12,23 +13,27 @@
     color: black;
 }
 
+/* Body styles */
 body {
     font-family: Arial, sans-serif;
     background-color: #FFFFFF;
     color: #333333;
 }
 
+/* Main heading (h1) styles */
 h1 {
     text-align: center;
     margin-top: 20px;
     text-decoration: underline;
 }
 
+/* Subheading (h2) styles */
 h2 {
     text-align: center;
     margin-top: 20px;
 }
 
+/* Introduction paragraph styles */
 .intro-text {
     text-align: center;
     width: 80%;
@@ -38,15 +43,18 @@ h2 {
     color: #666666;
 }
 
+/* Center alignment for elements within this class */
 .center {
     text-align: center;
     margin: 20px 0;
 }
 
+/* Main container styles */
 main {
     flex: 1;
 }
 
+/* Image container styles */
 .image-container {
     max-width: 1200px;
     margin: auto;
@@ -54,6 +62,7 @@ main {
     background-color: #fff;
 }
 
+/* Section styles with animations */
 .top-section, .bottom-section {
     display: flex;
     margin-bottom: 20px;
@@ -72,6 +81,7 @@ main {
     animation-name: fadeInRight;
 }
 
+/* Image styles within sections */
 .top-section img {
     max-width: 300px;
     margin-right: 20px;
@@ -82,6 +92,7 @@ main {
     margin-left: 20px;
 }
 
+/* Text content within sections */
 .top-section .text-content, .bottom-section .text-content {
     max-width: 800px;
     margin: auto 20px;
@@ -92,6 +103,7 @@ main {
     text-align: left;
 }
 
+/* Keyframe animations for sections */
 @keyframes fadeInLeft {
     from {
         opacity: 0;
@@ -125,6 +137,7 @@ main {
     }
 }
 
+/* Footer styles */
 footer {
     background-color: #333;
     color: #fff;
@@ -140,24 +153,29 @@ footer {
     font-size: 20px; /* Smaller font size */
 }
 
+/* Footer section styles */
 .footer-section {
     margin: 2px;
 }
 
+/* Footer section headings */
 .footer-section h5 {
     margin-top: 0;
     font-size: 15px; /* Font size for the headings */
 }
 
+/* Footer section paragraphs */
 .footer-section p {
     margin: 2px 0;
     font-size: 12px; /* Smaller font size for contents */
 }
 
+/* Specific styles for unit info paragraphs */
 .unit-info p {
     margin: 2px 0; /* Reduce space between points */
 }
 
+/* Chart container styles */
 #chart-container {
     display: flex;
     justify-content: space-between;
@@ -166,14 +184,15 @@ footer {
     padding: 20px;
     height: auto; /* Set height to auto to fit content */
     max-height: 350px; /* Optionally set a maximum height */
-    
 }
 
+/* Chart styles */
 #chart {
     width: 70%;
     height: 90%; /* Adjust as needed */
 }
 
+/* Side container styles */
 #side-container {
     display: flex;
     flex-direction: column;
@@ -181,11 +200,13 @@ footer {
     width: 30%;
 }
 
+/* Button container styles */
 #button-container {
     align-self: center; /* Align button container to the end (right) */
     margin-bottom: 9px; /* Space between button and text container */
 }
 
+/* Text container styles */
 #text-container {
     width: 80%;
     align-self: center;
@@ -193,13 +214,14 @@ footer {
     padding: 0px 10px 20px 20px; /* Reduced top padding */
     background-color: white;
     transition: opacity 0.5s ease;
-
 }
 
+/* Paragraph styles within text container */
 #text-container p {
     font-size: 12px; /* Adjust the font size as needed */
 }
 
+/* Button styles */
 .vis-button,.view-button {
     background-color: #4CAF50;
     color: white;
@@ -214,17 +236,20 @@ footer {
     cursor: pointer;
 }
 
+/* Hover effect for buttons */
 .vis-button:hover, .view-button:hover {
     background-color: white;
     color: black;
     border: 2px solid #4CAF50;
 }
 
+/* Navigation styles */
 #main-nav {
     background-color: #333;
     overflow: hidden;
 }
 
+/* Navbar styles */
 #main-nav .navbar {
     list-style-type: none;
     margin: 0;
@@ -233,10 +258,12 @@ footer {
     justify-content: center;
 }
 
+/* Navbar list item styles */
 #main-nav .navbar li {
     display: inline;
 }
 
+/* Navbar button styles */
 #main-nav .navbar li button {
     background-color: #333;
     color: white;
@@ -251,11 +278,13 @@ footer {
     cursor: pointer;
 }
 
+/* Hover effect for navbar buttons */
 #main-nav .navbar li button:hover {
     background-color: #ddd;
     color: black;
 }
 
+/* Radio group styles */
 #radio-group {
     display: flex;
     justify-content: center;
@@ -263,31 +292,33 @@ footer {
     background-color: #333;
 }
 
+/* Radio group label styles */
 #radio-group label {
     color: white;
     margin: 0 10px;
 }
 
+/* Radio group input styles */
 #radio-group input {
     margin-right: 5px;
 }
 
+/* Chart styles */
 #chart {
     margin: 20px auto;
     width: 80%;
     height: 400px;
 }
 
-
-
+/* Slider wrapper styles */
 #slider-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
- 
     margin: 20px 0 50px 0; /* Adjust margins to move the slider up */
 }
 
+/* Slider container styles */
 #slider-container {
     display: flex;
     align-items: center;
@@ -295,13 +326,14 @@ footer {
     margin-bottom: 5px;
 }
 
+/* Slider container label styles */
 #slider-container label {
     font-weight: bold;
     margin-right: 5px;
 }
 
+/* Slider input styles */
 #slider-container input[type="range"] {
-   
     width: 200px;
     height: 5px;
     background: #ddd;
@@ -311,6 +343,7 @@ footer {
     border-radius: 5px;
 }
 
+/* Slider thumb styles for Webkit browsers */
 #slider-container input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
@@ -321,6 +354,7 @@ footer {
     border-radius: 50%;
 }
 
+/* Slider thumb styles for Mozilla browsers */
 #slider-container input[type="range"]::-moz-range-thumb {
     width: 15px;
     height: 15px;
@@ -329,6 +363,7 @@ footer {
     border-radius: 50%;
 }
 
+/* Date range display styles */
 #date-range-display {
     font-size: 16px;
     font-weight: bold;

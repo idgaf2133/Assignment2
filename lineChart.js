@@ -189,7 +189,6 @@ function updateTimeRange() {
     gridX.selectAll("line").style("stroke", "lightgray").style("opacity", 0.2);
 }
 
-
 function updateTooltipsAndCircles(currentData, t, startDate, endDate) {
     // Remove existing circles before setting up new ones
     svg.selectAll(".line-circle").remove();
@@ -369,10 +368,11 @@ function addLineChartText(){
         .style("font-size", "12px")  // Reduced font size
         .transition() // Transition to fade in
         .duration(2000)
-        .style("opacity", 1); // Final opacit
+        .style("opacity", 1); // Final opacity
 }
 
 function getParagraphContent(disease) {
+    // Define paragraph content for each disease
     var paragraphs = {
         'DTP': 'The analysis of the immunization and incidence rates over time shows that periods of lower immunization rates often coincide with peaks in incidence rates. Public health interventions appear to increase immunization rates and reduce incidence rates. The scatter plot analysis indicates a positive correlation between immunization rates and incidence rates, suggesting that as immunization rates increased, incidence rates also increased. These findings highlight significant trends and patterns in the relationship between immunization coverage and disease incidence.',
         'Measles': 'The dual-axis line chart and scatter plot reveal key trends and patterns in measles immunization and incidence rates. The line chart shows a clear inverse relationship: as immunization rates rise, incidence rates fall. This trend is reinforced by public health campaigns and policy changes, which significantly boost immunization rates and reduce incidence. However, periodic spikes in incidence suggest ongoing challenges, such as outbreaks in unvaccinated populations. The scatter plot supports these findings, displaying a strong negative correlation between immunization and incidence rates, with higher immunization rates generally associated with lower incidence rates. These patterns highlight the effectiveness of vaccination in controlling measles.',
@@ -380,4 +380,3 @@ function getParagraphContent(disease) {
     };
     return paragraphs[disease];
 }
-

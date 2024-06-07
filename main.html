@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,30 +16,34 @@
     <link rel="stylesheet" href="styles.css">
     <script src="transition.js"></script>
 </head>
+
 <body onload="fadeIn()">
+    <!-- Main Title -->
     <h1>Impact of Immunization on Disease Incidence Rates</h1>
     <h2>A Data-Driven Analysis of Diphtheria, Measles, and Hepatitis</h2>
    
-    <!-- Introduction -->
+    <!-- Introduction Section -->
     <p class="intro-text">
         Vaccination plays a crucial role in preventing infectious diseases and reducing their incidence rates. This analysis focuses on three significant diseases: diphtheria, measles, and hepatitis. By examining immunization and incidence data, we aim to highlight the impact of vaccination efforts over time and underscore the importance of maintaining high immunization coverage to protect public health.
     </p>
 
-    <!-- Button to View Visualizations -->
+    <!-- Buttons to Navigate to Visualizations and Conclusion -->
     <div class="center">
         <button class="view-button" onclick="fadeOutAndRedirect('visualizations.html')">View Visualizations</button>
         <button class="view-button" onclick="fadeOutAndRedirect('conclusion.html')">Conclusion</button>
     </div>
     
+    <!-- Container for Visual Content -->
     <div class="container">
         <div class="top-section">
+            <!-- Line Chart Image -->
             <img src="images/linechart.png" alt="linechart" class="top-image">
             <div class="text-content">
                 <h4>Background:</h4>
                 <p>
                     Over the past three decades, public health initiatives have significantly boosted vaccination rates.
-                    These linecharts vividly illustrates the relationship between the immunization coverage and the incidence of three different diseases. 
-                    These linecharts showcase trends that are contruintuitive and really makes the viewer question how much efect immunization is when compared to other factors.
+                    These linecharts vividly illustrate the relationship between the immunization coverage and the incidence of three different diseases. 
+                    These linecharts showcase trends that are counterintuitive and really make the viewer question how effective immunization is when compared to other factors.
                 </p>
             </div>
         </div>
@@ -52,6 +55,7 @@
                     By visualizing individual data points, it allows us to discern patterns and anomalies in the data. 
                 </p>
             </div>
+            <!-- Scatter Plot Image -->
             <img src="images/scatterplot.png" alt="scatterplot" class="bottom-image">
         </div>
     </div>
@@ -76,6 +80,5 @@
             <p>Convenor: Karola von Baggo</p>
         </div>
     </footer>
-
 </body>
 </html>

@@ -1,6 +1,6 @@
 function showScatterPlot(disease) {
     var currentData = datasets[disease];
-    // Show range sliders
+    // Hide range sliders
     d3.select("#slider-wrapper").style("display", "none");
 
     // Hide line chart elements including lines, y-axis labels, and grid lines
@@ -179,10 +179,6 @@ function showScatterPlot(disease) {
     buttonContainer.appendChild(lineChartButton);
 }
 
-
-
-
-
 function linearRegression(x, y) {
     var n = x.length;
     var sumX = d3.sum(x);
@@ -195,6 +191,7 @@ function linearRegression(x, y) {
 
     return { slope: slope, intercept: intercept };
 }
+
 function addScatterPlotText() {
     // Remove old axis labels before adding new ones with fade-in transition
     svg.selectAll(".x.label, .y.label").remove();
@@ -206,7 +203,7 @@ function addScatterPlotText() {
         .attr("x", w / 2)
         .attr("y", h - padding / 12)
         .style("opacity", 0) // Initial opacity
-        .text("Immunization Rate (%)")
+        .text("Immunization Rate")
         .style("font-size", "12px")  // Reduced font size
         .transition() // Transition to fade in
         .duration(2000)
