@@ -1,12 +1,10 @@
-
 function showLineChart(disease) {
     selectedDisease = disease; // Update the global variable
 
     var currentData = datasets[disease];
 
     // Show range sliders
-     // Show range sliders
-     d3.select("#slider-wrapper").style("display", "block");
+    d3.select("#slider-wrapper").style("display", "block");
 
     // Remove existing elements
     svg.selectAll(".dot").transition().duration(750).attr("r", 0).remove();
@@ -30,29 +28,41 @@ function showLineChart(disease) {
     yAxisRight = svg.append("g")
         .attr("class", "y-axis-right")
         .attr("transform", `translate(${w - padding},0)`)
-        .call(d3.axisRight(yScaleRight))
-        .transition(t);
+        .call(d3.axisRight(yScaleRight));
+
     yAxisRight.transition(t).call(d3.axisRight(yScaleRight));
 
-    // Update lines
+    // Update lines with proper data binding
     var lineLeft = d3.line().x(d => xScale(d.date)).y(d => yScaleLeft(d.number));
     var lineRight = d3.line().x(d => xScale(d.date)).y(d => yScaleRight(d.number));
 
-    svg.append("path")
-        .datum(currentData.immunization)
-        .attr("class", "line immunization")
-        .style("stroke", "blue")
-        .style("fill", "none")
-        .transition(t)
-        .attr("d", lineLeft);
+    var immunizationLine = svg.selectAll(".line.immunization")
+        .data([currentData.immunization], d => d.date);
 
-    svg.append("path")
-        .datum(currentData.incidence)
-        .attr("class", "line incidence")
-        .style("stroke", "red")
-        .style("fill", "none")
+    immunizationLine.enter()
+        .append("path")
+        .attr("class", "line immunization")
+        .merge(immunizationLine)
         .transition(t)
-        .attr("d", lineRight);
+        .attr("d", lineLeft)
+        .style("stroke", "blue")
+        .style("fill", "none");
+
+    immunizationLine.exit().remove();
+
+    var incidenceLine = svg.selectAll(".line.incidence")
+        .data([currentData.incidence], d => d.date);
+
+    incidenceLine.enter()
+        .append("path")
+        .attr("class", "line incidence")
+        .merge(incidenceLine)
+        .transition(t)
+        .attr("d", lineRight)
+        .style("stroke", "red")
+        .style("fill", "none");
+
+    incidenceLine.exit().remove();
 
     // Append grid
     svg.selectAll(".grid").remove();
@@ -101,7 +111,6 @@ function showLineChart(disease) {
     updateTimeRange();
 }
 
-
 function updateTimeRange() {
     var startTime = +d3.select("#start-slider").property("value");
     var endTime = +d3.select("#end-slider").property("value");
@@ -131,37 +140,52 @@ function updateTimeRange() {
     var t = svg.transition().duration(750);
     xAxis.transition(t).call(d3.axisBottom(xScale));
 
-    // Remove existing lines
-    svg.selectAll(".line.immunization").remove();
-    svg.selectAll(".line.incidence").remove();
-
-    // Update lines
+    // Update lines with proper data binding and transitioning
     var lineLeft = d3.line().x(d => xScale(d.date)).y(d => yScaleLeft(d.number));
     var lineRight = d3.line().x(d => xScale(d.date)).y(d => yScaleRight(d.number));
 
-    svg.append("path")
-        .datum(currentData.immunization.filter(d => d.date >= startDate && d.date <= endDate))
-        .attr("class", "line immunization")
-        .style("stroke", "blue")
-        .style("fill", "none")
-        .transition(t)
-        .attr("d", lineLeft);
+    var immunizationLine = svg.selectAll(".line.immunization")
+        .data([currentData.immunization.filter(d => d.date >= startDate && d.date <= endDate)], d => d.date);
 
-    svg.append("path")
-        .datum(currentData.incidence.filter(d => d.date >= startDate && d.date <= endDate))
-        .attr("class", "line incidence")
-        .style("stroke", "red")
-        .style("fill", "none")
+    immunizationLine.enter()
+        .append("path")
+        .attr("class", "line immunization")
+        .merge(immunizationLine)
         .transition(t)
-        .attr("d", lineRight);
+        .attr("d", lineLeft)
+        .style("stroke", "blue")
+        .style("fill", "none");
+
+    immunizationLine.exit().remove();
+
+    var incidenceLine = svg.selectAll(".line.incidence")
+        .data([currentData.incidence.filter(d => d.date >= startDate && d.date <= endDate)], d => d.date);
+
+    incidenceLine.enter()
+        .append("path")
+        .attr("class", "line incidence")
+        .merge(incidenceLine)
+        .transition(t)
+        .attr("d", lineRight)
+        .style("stroke", "red")
+        .style("fill", "none");
+
+    incidenceLine.exit().remove();
 
     // Update circles and tooltips
     updateTooltipsAndCircles(currentData, t, startDate, endDate);
 
-    // Update grid
+    // Update grid with transitioning
     svg.selectAll(".grid").remove();
-    gridX = svg.append("g").attr("class", "grid").attr("transform", `translate(0,${h - padding})`).call(d3.axisBottom(xScale).ticks(30).tickSize(-h + 2 * padding).tickFormat(""));
-    gridX.transition(t).call(d3.axisBottom(xScale).ticks(30).tickSize(-h + 2 * padding).tickFormat("")).attr("transform", `translate(0,${h - padding})`);
+    gridX = svg.append("g")
+        .attr("class", "grid")
+        .attr("transform", `translate(0,${h - padding})`)
+        .call(d3.axisBottom(xScale).ticks(30).tickSize(-h + 2 * padding).tickFormat(""));
+    
+    gridX.transition(t)
+        .call(d3.axisBottom(xScale).ticks(30).tickSize(-h + 2 * padding).tickFormat(""))
+        .attr("transform", `translate(0,${h - padding})`);
+    
     gridX.selectAll("line").style("stroke", "lightgray").style("opacity", 0.2);
 }
 
@@ -169,7 +193,6 @@ function formatDate(date) {
     var options = { year: 'numeric', month: 'short' };
     return date.toLocaleDateString('en-US', options);
 }
-
 
 
 function updateTooltipsAndCircles(currentData, t, startDate, endDate) {
