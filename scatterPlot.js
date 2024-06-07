@@ -1,15 +1,11 @@
-
 function showScatterPlot(disease) {
     var currentData = datasets[disease];
-      // Show range sliders
-      d3.select("#slider-wrapper").style("display", "none");
+    // Show range sliders
+    d3.select("#slider-wrapper").style("display", "none");
 
     // Hide line chart elements including lines, y-axis labels, and grid lines
     svg.selectAll(".line-circle").transition().duration(750).attr("r", 0).remove();
     svg.selectAll(".line,.grid,.y-axis-right,.legend").transition().duration(750).attr("opacity", 0).remove();
-
-    
-
 
     // Update scales for scatter plot
     var minValue = d3.min(currentData.immunization, d => d.number);
@@ -21,7 +17,7 @@ function showScatterPlot(disease) {
     xAxis.transition(t).call(d3.axisBottom(xScale));
     yAxisLeft.transition(t).call(d3.axisLeft(yScaleLeft));
 
-      // Remove any existing grid lines
+    // Remove any existing grid lines
     svg.selectAll(".grid").remove();
 
     // Add grid lines for scatter plot
@@ -30,7 +26,7 @@ function showScatterPlot(disease) {
         .attr("transform", `translate(0,${h - padding})`)
         .call(d3.axisBottom(xScale)
             .ticks(10)
-            .tickSize(-h +  2*padding)
+            .tickSize(-h + 2 * padding)
             .tickFormat("")
         );
 
@@ -46,7 +42,6 @@ function showScatterPlot(disease) {
     gridX.selectAll("line")
         .style("stroke", "lightgray")
         .style("stroke-opacity", 0.4);
-   
 
     gridY.selectAll("line")
         .style("stroke", "lightgray")
@@ -57,15 +52,12 @@ function showScatterPlot(disease) {
         .style("stroke", "none")
         .style("opacity", 0);
 
-
-
-
     // Append circles for scatter plot with transitions
     var circles = svg.selectAll(".dot")
-        .data(currentData.immunization.map((d, i) => ({ 
-            immunization: d.number, 
-            incidence: currentData.incidence[i].number, 
-            date: d.date 
+        .data(currentData.immunization.map((d, i) => ({
+            immunization: d.number,
+            incidence: currentData.incidence[i].number,
+            date: d.date
         })));
 
     circles.enter().append("circle")
@@ -74,14 +66,22 @@ function showScatterPlot(disease) {
         .attr("cy", d => yScaleLeft(d.incidence))
         .attr("r", 0)
         .style("fill", "Purple")
-        .on("click", function(event, d) {
+        .on("mouseover", function (event, d) {
             d3.select(this)
                 .transition()
-                .duration(750)
-                .attr("r", 20)
+                .duration(800)
+                .attr("r", 15); // Increase radius on hover
+            tooltip.transition().duration(300).style("opacity", .9);
+            tooltip.html("<strong>Date:</strong> " + d.date.getFullYear() + "<br/><strong>Immunization:</strong> " + d.immunization + "%<br/><strong>Incidence:</strong> " + d.incidence)
+                .style("left", (event.pageX) + "px")
+                .style("top", (event.pageY - 28) + "px");
+        })
+        .on("mouseout", function (event, d) {
+            d3.select(this)
                 .transition()
-                .duration(750)
-                .attr("r", 5);
+                .duration(600)
+                .attr("r", 5); // Restore radius on mouseout
+            tooltip.transition().duration(300).style("opacity", 0);
         })
         .transition(t)
         .attr("r", 5);
@@ -94,32 +94,40 @@ function showScatterPlot(disease) {
         .style("opacity", 0);
 
     svg.selectAll(".dot")
-        .on("mouseover", function(event, d) {
+        .on("mouseover", function (event, d) {
+            d3.select(this)
+                .transition()
+                .duration(300)
+                .attr("r", 10); // Increase radius on hover
             tooltip.transition().duration(300).style("opacity", .9);
             tooltip.html("<strong>Date:</strong> " + d.date.getFullYear() + "<br/><strong>Immunization:</strong> " + d.immunization + "%<br/><strong>Incidence:</strong> " + d.incidence)
                 .style("left", (event.pageX) + "px")
                 .style("top", (event.pageY - 28) + "px");
         })
-        .on("mouseout", function(d) {
+        .on("mouseout", function (event, d) {
+            d3.select(this)
+                .transition()
+                .duration(300)
+                .attr("r", 5); // Restore radius on mouseout
             tooltip.transition().duration(300).style("opacity", 0);
         });
 
     addScatterPlotText();
 
-     // Prepare the data for regression
-     var xData = currentData.immunization.map(d => d.number);
-     var yData = currentData.incidence.map(d => d.number);
- 
-     // Calculate the linear regression
-     var regression = linearRegression(xData, yData);
- 
-     // Generate points for the trend line
-     var trendLine = [
-         { x: d3.min(xData), y: regression.slope * d3.min(xData) + regression.intercept },
-         { x: d3.max(xData), y: regression.slope * d3.max(xData) + regression.intercept }
-     ];
- 
-     // Add the trend line to the scatter plot with a fade-in transition
+    // Prepare the data for regression
+    var xData = currentData.immunization.map(d => d.number);
+    var yData = currentData.incidence.map(d => d.number);
+
+    // Calculate the linear regression
+    var regression = linearRegression(xData, yData);
+
+    // Generate points for the trend line
+    var trendLine = [
+        { x: d3.min(xData), y: regression.slope * d3.min(xData) + regression.intercept },
+        { x: d3.max(xData), y: regression.slope * d3.max(xData) + regression.intercept }
+    ];
+
+    // Add the trend line to the scatter plot with a fade-in transition
     var trend = svg.selectAll(".trend-line")
         .data([trendLine]);
 
@@ -141,21 +149,22 @@ function showScatterPlot(disease) {
         .transition()
         .style("opacity", 0)
         .remove();
-        
-     // Add heading with the corresponding disease
-     svg.selectAll(".chart-title").remove(); // Remove previous heading
 
-     svg.append("text")
-         .attr("class", "chart-title")
-         .attr("x", w / 2)
-         .attr("y", (padding / 2) -4 )
-         .attr("text-anchor", "middle")
-         .style("font-size", "15px")
-         .style("fill", "black")
-         .style("opacity", 0)
-         .text(disease + " Immunization vs Incidence rates with trend line")
-         .transition(t)
-         .style("opacity", 1);
+    // Add heading with the corresponding disease
+    svg.selectAll(".chart-title").remove(); // Remove previous heading
+
+    svg.append("text")
+        .attr("class", "chart-title")
+        .attr("x", w / 2)
+        .attr("y", (padding / 2) - 4)
+        .attr("text-anchor", "middle")
+        .style("font-size", "15px")
+        .style("fill", "black")
+        .style("opacity", 0)
+        .text(disease + " Immunization vs Incidence rates with trend line")
+        .transition(t)
+        .style("opacity", 1);
+
     // Add button to switch back to line chart
     var buttonContainer = document.getElementById("button-container");
     buttonContainer.innerHTML = ""; // Clear any existing buttons
@@ -163,13 +172,12 @@ function showScatterPlot(disease) {
     var lineChartButton = document.createElement("button");
     lineChartButton.innerHTML = "Switch to Line Chart";
     lineChartButton.className = "vis-button";
-    lineChartButton.onclick = function() {
+    lineChartButton.onclick = function () {
         showLineChart(disease);
     };
 
     buttonContainer.appendChild(lineChartButton);
 }
-
 
 
 
