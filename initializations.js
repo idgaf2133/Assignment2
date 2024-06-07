@@ -1,7 +1,8 @@
 
 // Global variables to store data and visualization elements
 var datasets = {};
-var svg, xScale, yScaleLeft, yScaleRight, xAxis, yAxisLeft, yAxisRight,w,h,padding;
+var svg, xScale, yScaleLeft, yScaleRight, xAxis, yAxisLeft, yAxisRight,w,h,padding,currentData;;
+var selectedDisease = 'DTP'; // Default disease
 
 
 // Preload all datasets when the document is ready

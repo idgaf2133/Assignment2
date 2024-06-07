@@ -1,5 +1,7 @@
+
 function showLineChart(disease) {
-    var currentData = datasets[disease];
+    currentData= datasets[disease];
+    selectedDisease = disease;
 
     //gridX = svg.append("g").attr("class", "grid");
     // Remove scatter plot circles
@@ -10,12 +12,14 @@ function showLineChart(disease) {
 
 
 
-    // Update scales based on current data
-    xScale.domain([d3.min(currentData.immunization.concat(currentData.incidence), d => d.date), d3.max(currentData.immunization.concat(currentData.incidence), d => d.date)]);
-    var minValue = d3.min(currentData.immunization, d => d.number);
-    yScaleLeft.domain([Math.max(0, minValue - 10), 100]);
-    yScaleRight.domain([0, d3.max(currentData.incidence, d => d.number)]);
+   // Update scales based on current data
+   var minDate = d3.min(currentData.immunization.concat(currentData.incidence), d => d.date);
+   var maxDate = d3.max(currentData.immunization.concat(currentData.incidence), d => d.date);
 
+   xScale.domain([minDate, maxDate]);
+   var minValue = d3.min(currentData.immunization, d => d.number);
+   yScaleLeft.domain([Math.max(0, minValue - 10), 100]);
+   yScaleRight.domain([0, d3.max(currentData.incidence, d => d.number)]);
 
 
     // Transition for updating axes
@@ -142,7 +146,54 @@ function showLineChart(disease) {
     };
 
     buttonContainer.appendChild(scatterPlotButton);
+    // Show range sliders
+    d3.select("#slider-container").style("display", "block");
+    d3.select("#time-slider").style("display", "block");
+
+
+     // Store min and max dates in the range slider for later use
+     d3.select("#time-slider").attr("min", minDate.getTime()).attr("max", maxDate.getTime()).attr("value", maxDate.getTime());
+     updateTimePeriod(maxDate.getTime());
 }
+
+function updateTimePeriod(value) {
+    var selectedDate = new Date(+value);
+
+    var filteredData = {
+        immunization: datasets[selectedDisease].immunization.filter(d => d.date <= selectedDate),
+        incidence: datasets[selectedDisease].incidence.filter(d => d.date <= selectedDate)
+    };
+
+    // Update xScale domain
+    xScale.domain([d3.min(filteredData.immunization.concat(filteredData.incidence), d => d.date), selectedDate]);
+
+    // Transition for updating axes
+    var t = svg.transition().duration(750);
+    xAxis.transition(t).call(d3.axisBottom(xScale));
+
+    // Update lines
+    var lineLeft = d3.line().x(d => xScale(d.date)).y(d => yScaleLeft(d.number));
+    var lineRight = d3.line().x(d => xScale(d.date)).y(d => yScaleRight(d.number));
+
+    var pathLeft = svg.selectAll(".line.immunization").data([filteredData.immunization], d => d.date);
+    pathLeft.enter().append("path").attr("class", "line immunization").style("stroke", "blue").style("fill", "none").merge(pathLeft).transition(t).attr("d", lineLeft);
+    pathLeft.exit().transition(t).remove();
+
+    var pathRight = svg.selectAll(".line.incidence").data([filteredData.incidence], d => d.date);
+    pathRight.enter().append("path").attr("class", "line incidence").style("stroke", "red").style("fill", "none").merge(pathRight).transition(t).attr("d", lineRight);
+    pathRight.exit().transition(t).remove();
+        // Update circles and tooltips
+    updateTooltipsAndCircles(currentData, t, selectedDate);
+
+    // Update grid
+    svg.selectAll(".grid").remove();
+    gridX = svg.append("g").attr("class", "grid").attr("transform", `translate(0,${h - padding})`).call(d3.axisBottom(xScale).ticks(30).tickSize(-h + 2 * padding).tickFormat(""));
+    gridX.transition(t).call(d3.axisBottom(xScale).ticks(30).tickSize(-h + 2 * padding).tickFormat("")).attr("transform", `translate(0,${h - padding})`);
+    gridX.selectAll("line").style("stroke", "lightgray").style("stroke-opacity", 0.2);
+    
+
+}
+/*
 
 function updateTooltipsAndCircles(currentData, t) {
     // Remove existing circles before setting up new ones
@@ -187,6 +238,84 @@ function updateTooltipsAndCircles(currentData, t) {
 
     // Add circles and tooltips for incidence dataset
     currentData.incidence.forEach(function(d) {
+        var year = d.date.getFullYear();
+        if (currentData.incidenceEvents[year]) {
+            svg.append("circle")
+                .attr("class", "line-circle")
+                .attr("cx", xScale(d.date))
+                .attr("cy", yScaleRight(d.number))
+                .attr("r", 0) // Start with a radius of 0 for the transition effect
+                .style("fill", "red")
+                .transition(t) // Apply the transition
+                .attr("r", 5) // End with the desired radius
+                .on("end", function() { // Tooltip behavior setup after transition ends
+                    d3.select(this)
+                        .on("mouseover", function(event) {
+                            tooltip.transition()
+                                .duration(300)
+                                .style("opacity", .9)
+                                .style("background-color", "lightcoral"); // Tooltip background color for dataset2
+                            tooltip.html("<strong>Year:</strong> " + year + "<strong>  Incidence:</strong> " + d.number + "<br/><strong>Event:</strong> " + currentData.incidenceEvents[year].Event + "<br/><strong>Description:</strong> " + currentData.incidenceEvents[year].Description)
+                                .style("left", (event.pageX) + "px")
+                                .style("top", (event.pageY - 28) + "px");
+                        })
+                        .on("mouseout", function(d) {
+                            tooltip.transition()
+                                .duration(300)
+                                .style("opacity", 0);
+                        });
+                });
+        }
+    });
+} */
+
+function updateTooltipsAndCircles(currentData, t, selectedDate) {
+    // Remove existing circles before setting up new ones
+    svg.selectAll(".line-circle").remove();
+
+    // Tooltip setup
+    var tooltip = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+
+    // Filter data based on the selected date
+    var filteredImmunizationData = currentData.immunization.filter(d => d.date <= selectedDate);
+    var filteredIncidenceData = currentData.incidence.filter(d => d.date <= selectedDate);
+
+    // Add circles and tooltips for immunization dataset
+    filteredImmunizationData.forEach(function(d) {
+        var year = d.date.getFullYear();
+        if (currentData.immunizationEvents[year]) {
+            svg.append("circle")
+                .attr("class", "line-circle")
+                .attr("cx", xScale(d.date))
+                .attr("cy", yScaleLeft(d.number))
+                .attr("r", 0) // Start with a radius of 0 for the transition effect
+                .style("fill", "blue")
+                .transition(t) // Apply the transition
+                .attr("r", 5) // End with the desired radius
+                .on("end", function() { // Tooltip behavior setup after transition ends
+                    d3.select(this)
+                        .on("mouseover", function(event) {
+                            tooltip.transition()
+                                .duration(300)
+                                .style("opacity", .9)
+                                .style("background-color", "lightsteelblue"); // Tooltip background color for dataset1
+                            tooltip.html("<strong>Year:</strong> " + year + "<strong> Immunization:</strong> " + d.number + "%" + "<br/><strong>Event:</strong> " + currentData.immunizationEvents[year].Event + "<br/><strong>Description:</strong> " + currentData.immunizationEvents[year].Description)
+                                .style("left", (event.pageX) + "px")
+                                .style("top", (event.pageY - 28) + "px");
+                        })
+                        .on("mouseout", function(d) {
+                            tooltip.transition()
+                                .duration(300)
+                                .style("opacity", 0);
+                        });
+                });
+        }
+    });
+
+    // Add circles and tooltips for incidence dataset
+    filteredIncidenceData.forEach(function(d) {
         var year = d.date.getFullYear();
         if (currentData.incidenceEvents[year]) {
             svg.append("circle")

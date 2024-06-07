@@ -1,6 +1,9 @@
 
 function showScatterPlot(disease) {
     var currentData = datasets[disease];
+     // Show range sliders
+     d3.select("#slider-container").style("display", "none");
+     d3.select("#time-slider").style("display", "none");
 
     // Hide line chart elements including lines, y-axis labels, and grid lines
     svg.selectAll(".line-circle").transition().duration(750).attr("r", 0).remove();
