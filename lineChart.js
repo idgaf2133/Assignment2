@@ -66,8 +66,8 @@ function showLineChart(disease) {
 
     // Append grid
     svg.selectAll(".grid").remove();
-    gridX = svg.append("g").attr("class", "grid").attr("transform", `translate(0,${h - padding})`).call(d3.axisBottom(xScale).ticks(30).tickSize(-h + 2 * padding).tickFormat(""));
-    gridX.transition(t).call(d3.axisBottom(xScale).ticks(30).tickSize(-h + 2 * padding).tickFormat("")).attr("transform", `translate(0,${h - padding})`);
+    gridX = svg.append("g").attr("class", "grid").attr("transform", `translate(0,${h - padding})`).call(d3.axisBottom(xScale).ticks(d3.timeYear.every(1)).tickSize(-h + 2 * padding).tickFormat(""));
+    gridX.transition(t).call(d3.axisBottom(xScale).ticks(d3.timeYear.every(1)).tickSize(-h + 2 * padding).tickFormat("")).attr("transform", `translate(0,${h - padding})`);
     gridX.selectAll("line").style("stroke", "lightgray").style("stroke-opacity", 0.2);
 
     addLineChartText();
@@ -104,8 +104,8 @@ function showLineChart(disease) {
     d3.select("#end-slider").attr("min", minTime).attr("max", maxTime).attr("value", maxTime);
 
     // Update the display for date range
-    d3.select("#start-date").text(formatDate(minDate));
-    d3.select("#end-date").text(formatDate(maxDate));
+    d3.select("#start-date").text(minDate.getFullYear());
+    d3.select("#end-date").text(maxDate.getFullYear());
 
     // Initial update of the time range
     updateTimeRange();
@@ -127,8 +127,8 @@ function updateTimeRange() {
     var endDate = new Date(endTime);
 
     // Update the display for date range
-    d3.select("#start-date").text(formatDate(startDate));
-    d3.select("#end-date").text(formatDate(endDate));
+    d3.select("#start-date").text(startDate.getFullYear());
+    d3.select("#end-date").text(endDate.getFullYear());
 
     // Get current data for the selected disease
     var currentData = datasets[selectedDisease];
@@ -180,18 +180,13 @@ function updateTimeRange() {
     gridX = svg.append("g")
         .attr("class", "grid")
         .attr("transform", `translate(0,${h - padding})`)
-        .call(d3.axisBottom(xScale).ticks(30).tickSize(-h + 2 * padding).tickFormat(""));
+        .call(d3.axisBottom(xScale).ticks(d3.timeYear.every(1)).tickSize(-h + 2 * padding).tickFormat(""));
     
     gridX.transition(t)
-        .call(d3.axisBottom(xScale).ticks(30).tickSize(-h + 2 * padding).tickFormat(""))
+        .call(d3.axisBottom(xScale).ticks(d3.timeYear.every(1)).tickSize(-h + 2 * padding).tickFormat(""))
         .attr("transform", `translate(0,${h - padding})`);
     
     gridX.selectAll("line").style("stroke", "lightgray").style("opacity", 0.2);
-}
-
-function formatDate(date) {
-    var options = { year: 'numeric', month: 'short' };
-    return date.toLocaleDateString('en-US', options);
 }
 
 
