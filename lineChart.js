@@ -1,35 +1,31 @@
 
 function showLineChart(disease) {
-    currentData= datasets[disease];
-    selectedDisease = disease;
+    selectedDisease = disease; // Update the global variable
 
-    //gridX = svg.append("g").attr("class", "grid");
-    // Remove scatter plot circles
+    var currentData = datasets[disease];
+
+    // Show range sliders
+     // Show range sliders
+     d3.select("#slider-wrapper").style("display", "block");
+
+    // Remove existing elements
     svg.selectAll(".dot").transition().duration(750).attr("r", 0).remove();
     svg.selectAll(".trend-line").transition().attr("opacity", 0).remove();
 
-    //append right axis
+    // Update scales based on current data
+    var minDate = d3.min(currentData.immunization.concat(currentData.incidence), d => d.date);
+    var maxDate = d3.max(currentData.immunization.concat(currentData.incidence), d => d.date);
 
-
-
-   // Update scales based on current data
-   var minDate = d3.min(currentData.immunization.concat(currentData.incidence), d => d.date);
-   var maxDate = d3.max(currentData.immunization.concat(currentData.incidence), d => d.date);
-
-   xScale.domain([minDate, maxDate]);
-   var minValue = d3.min(currentData.immunization, d => d.number);
-   yScaleLeft.domain([Math.max(0, minValue - 10), 100]);
-   yScaleRight.domain([0, d3.max(currentData.incidence, d => d.number)]);
-
+    xScale.domain([minDate, maxDate]);
+    var minValue = d3.min(currentData.immunization, d => d.number);
+    yScaleLeft.domain([Math.max(0, minValue - 10), 100]);
+    yScaleRight.domain([0, d3.max(currentData.incidence, d => d.number)]);
 
     // Transition for updating axes
     var t = svg.transition().duration(750);
     xAxis.transition(t).call(d3.axisBottom(xScale));
     yAxisLeft.transition(t).call(d3.axisLeft(yScaleLeft));
 
-
-
-       // Remove and recreate the right y-axis for transition
     svg.selectAll(".y-axis-right").remove();
     yAxisRight = svg.append("g")
         .attr("class", "y-axis-right")
@@ -38,164 +34,145 @@ function showLineChart(disease) {
         .transition(t);
     yAxisRight.transition(t).call(d3.axisRight(yScaleRight));
 
-    // Update or initialize line for immunization
-    var lineLeft = d3.line()
-        .x(d => xScale(d.date))
-        .y(d => yScaleLeft(d.number));
+    // Update lines
+    var lineLeft = d3.line().x(d => xScale(d.date)).y(d => yScaleLeft(d.number));
+    var lineRight = d3.line().x(d => xScale(d.date)).y(d => yScaleRight(d.number));
 
-    var lineRight = d3.line()
-        .x(d => xScale(d.date))
-        .y(d => yScaleRight(d.number));
-
-    var pathLeft = svg.selectAll(".line.immunization")
-        .data([currentData.immunization], d => d.date);
-
-    pathLeft.enter()
-        .append("path")
+    svg.append("path")
+        .datum(currentData.immunization)
         .attr("class", "line immunization")
         .style("stroke", "blue")
         .style("fill", "none")
-        .merge(pathLeft)
         .transition(t)
         .attr("d", lineLeft);
 
-    pathLeft.exit().transition(t).remove();
-
-    var pathRight = svg.selectAll(".line.incidence")
-        .data([currentData.incidence], d => d.date);
-
-    pathRight.enter()
-        .append("path")
+    svg.append("path")
+        .datum(currentData.incidence)
         .attr("class", "line incidence")
         .style("stroke", "red")
         .style("fill", "none")
-        .merge(pathRight)
         .transition(t)
         .attr("d", lineRight);
 
-    pathRight.exit().transition(t).remove();
-
-    svg.selectAll(".grid").remove(); // Remove existing grid
-
-    gridX = svg.append("g") //append grid
-        .attr("class", "grid")
-        .attr("transform", `translate(0,${h - padding})`)
-        .call(d3.axisBottom(xScale)
-            .ticks(30)
-            .tickSize(-h + 2 * padding)
-            .tickFormat("")
-        );
-
-    gridX.transition(t).call(d3.axisBottom(xScale).ticks(30)
-        .tickSize(-h + 2 * padding)
-        .tickFormat(""))
-        .attr("transform", `translate(0,${h - padding})`);
-
-    gridX.selectAll("line")
-        .style("stroke", "lightgray")
-        .style("stroke-opacity", 0.2);
-    
-
-    
-
+    // Append grid
+    svg.selectAll(".grid").remove();
+    gridX = svg.append("g").attr("class", "grid").attr("transform", `translate(0,${h - padding})`).call(d3.axisBottom(xScale).ticks(30).tickSize(-h + 2 * padding).tickFormat(""));
+    gridX.transition(t).call(d3.axisBottom(xScale).ticks(30).tickSize(-h + 2 * padding).tickFormat("")).attr("transform", `translate(0,${h - padding})`);
+    gridX.selectAll("line").style("stroke", "lightgray").style("stroke-opacity", 0.2);
 
     addLineChartText();
-    updateTooltipsAndCircles(currentData, t);
+    updateTooltipsAndCircles(currentData, t, maxDate);
     addLegend();
 
-     // Add heading with the corresponding disease
-     svg.selectAll(".chart-title").remove(); // Remove previous heading
+    svg.selectAll(".chart-title").remove();
+    svg.append("text").attr("class", "chart-title").attr("x", w / 2).attr("y", (padding / 2) - 6).attr("text-anchor", "middle").style("font-size", "15px").style("fill", "black").style("opacity", 0).text(disease + " Immunization and Incidence Rates Over Time ").transition(t).style("opacity", 1);
 
-     svg.append("text")
-         .attr("class", "chart-title")
-         .attr("x", w / 2)
-         .attr("y", (padding / 2) -6)
-         .attr("text-anchor", "middle")
-         .style("font-size", "15px")
-         .style("fill", "black")
-         .style("opacity", 0)
-         .text(disease +" Immunization and Incidence Rates Over Time ")
-         .transition(t)
-         .style("opacity", 1);
-    
-    // Update the text box with the paragraph
     var textContainer = document.getElementById("text-container");
-    textContainer.innerHTML = ""; // Clear any existing content
-
+    textContainer.innerHTML = "";
     var paragraph = document.createElement("p");
-    paragraph.style.opacity = 0; // Start with opacity 0 for transition
-    paragraph.innerHTML = getParagraphContent(disease); // Get paragraph content based on disease
-
+    paragraph.style.opacity = 0;
+    paragraph.innerHTML = getParagraphContent(disease);
     textContainer.appendChild(paragraph);
-
-    // Transition the text opacity to 1
     setTimeout(function() {
         paragraph.style.opacity = 1;
     }, 100);
 
-
-    // Dynamically create the button to visualize scatter plot
     var buttonContainer = document.getElementById("button-container");
-    buttonContainer.innerHTML = ""; // Clear any existing buttons
-
+    buttonContainer.innerHTML = "";
     var scatterPlotButton = document.createElement("button");
     scatterPlotButton.innerHTML = "Switch to Scatterplot";
     scatterPlotButton.className = "vis-button";
     scatterPlotButton.onclick = function() {
         showScatterPlot(disease);
     };
-
     buttonContainer.appendChild(scatterPlotButton);
-    // Show range sliders
-    d3.select("#slider-container").style("display", "block");
-    d3.select("#time-slider").style("display", "block");
 
+    // Store min and max dates in the range sliders for later use
+    var minTime = minDate.getTime();
+    var maxTime = maxDate.getTime();
+    d3.select("#start-slider").attr("min", minTime).attr("max", maxTime).attr("value", minTime);
+    d3.select("#end-slider").attr("min", minTime).attr("max", maxTime).attr("value", maxTime);
 
-     // Store min and max dates in the range slider for later use
-     d3.select("#time-slider").attr("min", minDate.getTime()).attr("max", maxDate.getTime()).attr("value", maxDate.getTime());
-     updateTimePeriod(maxDate.getTime());
+    // Update the display for date range
+    d3.select("#start-date").text(formatDate(minDate));
+    d3.select("#end-date").text(formatDate(maxDate));
+
+    // Initial update of the time range
+    updateTimeRange();
 }
 
-function updateTimePeriod(value) {
-    var selectedDate = new Date(+value);
 
-    var filteredData = {
-        immunization: datasets[selectedDisease].immunization.filter(d => d.date <= selectedDate),
-        incidence: datasets[selectedDisease].incidence.filter(d => d.date <= selectedDate)
-    };
+function updateTimeRange() {
+    var startTime = +d3.select("#start-slider").property("value");
+    var endTime = +d3.select("#end-slider").property("value");
+
+    // Ensure start time is not after end time
+    if (startTime > endTime) {
+        // Swap values
+        var temp = startTime;
+        startTime = endTime;
+        endTime = temp;
+    }
+
+    var startDate = new Date(startTime);
+    var endDate = new Date(endTime);
+
+    // Update the display for date range
+    d3.select("#start-date").text(formatDate(startDate));
+    d3.select("#end-date").text(formatDate(endDate));
+
+    // Get current data for the selected disease
+    var currentData = datasets[selectedDisease];
 
     // Update xScale domain
-    xScale.domain([d3.min(filteredData.immunization.concat(filteredData.incidence), d => d.date), selectedDate]);
+    xScale.domain([startDate, endDate]);
 
     // Transition for updating axes
     var t = svg.transition().duration(750);
     xAxis.transition(t).call(d3.axisBottom(xScale));
 
+    // Remove existing lines
+    svg.selectAll(".line.immunization").remove();
+    svg.selectAll(".line.incidence").remove();
+
     // Update lines
     var lineLeft = d3.line().x(d => xScale(d.date)).y(d => yScaleLeft(d.number));
     var lineRight = d3.line().x(d => xScale(d.date)).y(d => yScaleRight(d.number));
 
-    var pathLeft = svg.selectAll(".line.immunization").data([filteredData.immunization], d => d.date);
-    pathLeft.enter().append("path").attr("class", "line immunization").style("stroke", "blue").style("fill", "none").merge(pathLeft).transition(t).attr("d", lineLeft);
-    pathLeft.exit().transition(t).remove();
+    svg.append("path")
+        .datum(currentData.immunization.filter(d => d.date >= startDate && d.date <= endDate))
+        .attr("class", "line immunization")
+        .style("stroke", "blue")
+        .style("fill", "none")
+        .transition(t)
+        .attr("d", lineLeft);
 
-    var pathRight = svg.selectAll(".line.incidence").data([filteredData.incidence], d => d.date);
-    pathRight.enter().append("path").attr("class", "line incidence").style("stroke", "red").style("fill", "none").merge(pathRight).transition(t).attr("d", lineRight);
-    pathRight.exit().transition(t).remove();
-        // Update circles and tooltips
-    updateTooltipsAndCircles(currentData, t, selectedDate);
+    svg.append("path")
+        .datum(currentData.incidence.filter(d => d.date >= startDate && d.date <= endDate))
+        .attr("class", "line incidence")
+        .style("stroke", "red")
+        .style("fill", "none")
+        .transition(t)
+        .attr("d", lineRight);
+
+    // Update circles and tooltips
+    updateTooltipsAndCircles(currentData, t, startDate, endDate);
 
     // Update grid
     svg.selectAll(".grid").remove();
     gridX = svg.append("g").attr("class", "grid").attr("transform", `translate(0,${h - padding})`).call(d3.axisBottom(xScale).ticks(30).tickSize(-h + 2 * padding).tickFormat(""));
     gridX.transition(t).call(d3.axisBottom(xScale).ticks(30).tickSize(-h + 2 * padding).tickFormat("")).attr("transform", `translate(0,${h - padding})`);
-    gridX.selectAll("line").style("stroke", "lightgray").style("stroke-opacity", 0.2);
-    
-
+    gridX.selectAll("line").style("stroke", "lightgray").style("opacity", 0.2);
 }
-/*
 
-function updateTooltipsAndCircles(currentData, t) {
+function formatDate(date) {
+    var options = { year: 'numeric', month: 'short' };
+    return date.toLocaleDateString('en-US', options);
+}
+
+
+
+function updateTooltipsAndCircles(currentData, t, startDate, endDate) {
     // Remove existing circles before setting up new ones
     svg.selectAll(".line-circle").remove();
 
@@ -204,83 +181,9 @@ function updateTooltipsAndCircles(currentData, t) {
         .attr("class", "tooltip")
         .style("opacity", 0);
 
-    // Add circles and tooltips for immunization dataset
-    currentData.immunization.forEach(function(d) {
-        var year = d.date.getFullYear();
-        if (currentData.immunizationEvents[year]) {
-            svg.append("circle")
-                .attr("class", "line-circle")
-                .attr("cx", xScale(d.date))
-                .attr("cy", yScaleLeft(d.number))
-                .attr("r", 0) // Start with a radius of 0 for the transition effect
-                .style("fill", "blue")
-                .transition(t) // Apply the transition
-                .attr("r", 5) // End with the desired radius
-                .on("end", function() { // Tooltip behavior setup after transition ends
-                    d3.select(this)
-                        .on("mouseover", function(event) {
-                            tooltip.transition()
-                                .duration(300)
-                                .style("opacity", .9)
-                                .style("background-color", "lightsteelblue"); // Tooltip background color for dataset1
-                            tooltip.html("<strong>Year:</strong> " + year + "<strong> Immunization:</strong> " + d.number+"%" + "<br/><strong>Event:</strong> " + currentData.immunizationEvents[year].Event + "<br/><strong>Description:</strong> " + currentData.immunizationEvents[year].Description)
-                                .style("left", (event.pageX) + "px")
-                                .style("top", (event.pageY - 28) + "px");
-                        })
-                        .on("mouseout", function(d) {
-                            tooltip.transition()
-                                .duration(300)
-                                .style("opacity", 0);
-                        });
-                });
-        }
-    });
-
-    // Add circles and tooltips for incidence dataset
-    currentData.incidence.forEach(function(d) {
-        var year = d.date.getFullYear();
-        if (currentData.incidenceEvents[year]) {
-            svg.append("circle")
-                .attr("class", "line-circle")
-                .attr("cx", xScale(d.date))
-                .attr("cy", yScaleRight(d.number))
-                .attr("r", 0) // Start with a radius of 0 for the transition effect
-                .style("fill", "red")
-                .transition(t) // Apply the transition
-                .attr("r", 5) // End with the desired radius
-                .on("end", function() { // Tooltip behavior setup after transition ends
-                    d3.select(this)
-                        .on("mouseover", function(event) {
-                            tooltip.transition()
-                                .duration(300)
-                                .style("opacity", .9)
-                                .style("background-color", "lightcoral"); // Tooltip background color for dataset2
-                            tooltip.html("<strong>Year:</strong> " + year + "<strong>  Incidence:</strong> " + d.number + "<br/><strong>Event:</strong> " + currentData.incidenceEvents[year].Event + "<br/><strong>Description:</strong> " + currentData.incidenceEvents[year].Description)
-                                .style("left", (event.pageX) + "px")
-                                .style("top", (event.pageY - 28) + "px");
-                        })
-                        .on("mouseout", function(d) {
-                            tooltip.transition()
-                                .duration(300)
-                                .style("opacity", 0);
-                        });
-                });
-        }
-    });
-} */
-
-function updateTooltipsAndCircles(currentData, t, selectedDate) {
-    // Remove existing circles before setting up new ones
-    svg.selectAll(".line-circle").remove();
-
-    // Tooltip setup
-    var tooltip = d3.select("body").append("div")
-        .attr("class", "tooltip")
-        .style("opacity", 0);
-
-    // Filter data based on the selected date
-    var filteredImmunizationData = currentData.immunization.filter(d => d.date <= selectedDate);
-    var filteredIncidenceData = currentData.incidence.filter(d => d.date <= selectedDate);
+    // Filter data based on the selected date range
+    var filteredImmunizationData = currentData.immunization.filter(d => d.date >= startDate && d.date <= endDate);
+    var filteredIncidenceData = currentData.incidence.filter(d => d.date >= startDate && d.date <= endDate);
 
     // Add circles and tooltips for immunization dataset
     filteredImmunizationData.forEach(function(d) {

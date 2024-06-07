@@ -46,11 +46,18 @@
         </div>
     </div>
 
-    <div id="slider-container">
-        <label for="time-slider">Select Time Period: </label>
-        <input type="range" id="time-slider" min="" max="" step="1" value="" oninput="updateTimePeriod(this.value)">
+    <div id="slider-wrapper">
+        <div id="slider-container">
+            <label for="start-slider">Start Date: </label>
+            <input type="range" id="start-slider" min="" max="" step="1" value="" oninput="updateTimeRange()">
+            <label for="end-slider">End Date: </label>
+            <input type="range" id="end-slider" min="" max="" step="1" value="" oninput="updateTimeRange()">
+        </div>
+        
+        <div id="date-range-display">
+            <span id="start-date"></span> - <span id="end-date"></span>
+        </div>
     </div>
-
     <footer>
         <div class="footer-section">
             <h5>About</h5>
